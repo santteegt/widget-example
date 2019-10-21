@@ -2,9 +2,9 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Modal from "../components/Modal";
 // import { IProviderOptions  IProviderCallback } from "../helpers/types";
-// import { 
-  // isMobile, 
-  // getInjectedProviderName 
+// import {
+  // isMobile,
+  // getInjectedProviderName
 // } from "../helpers/utils";
 // import connectors from "./connectors";
 import EventManager from "./events";

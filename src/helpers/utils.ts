@@ -37,20 +37,20 @@ export function checkInjectedProviders(): IInjectedProvidersMap {
   return result;
 }
 
-export function getInjectedProviderName(): string | null {
-  let result = null;
-
-  const injectedProviders = checkInjectedProviders();
-
-  if (injectedProviders.injectedAvailable) {
-    providers.forEach((providerInfo: IProviderInfo) => {
-      if (injectedProviders[providerInfo.check]) {
-        result = providerInfo.name;
-      }
-    });
-  }
-  return result;
-}
+// export function getInjectedProviderName(): string | null {
+//   let result = null;
+//
+//   const injectedProviders = checkInjectedProviders();
+//
+//   if (injectedProviders.injectedAvailable) {
+//     providers.forEach((providerInfo: IProviderInfo) => {
+//       if (injectedProviders[providerInfo.check]) {
+//         result = providerInfo.name;
+//       }
+//     });
+//   }
+//   return result;
+// }
 
 export function getProviderInfoByName(name: string | null): IProviderInfo {
   let result = fallbackProvider;

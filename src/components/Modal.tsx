@@ -1,10 +1,11 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import styled from "styled-components";
-import Provider from "./Provider";
-import { 
-  SimpleFunction, 
-  // IProviderCallback 
+import Providers from "./Providers";
+import Wallet from "./Wallet";
+import {
+  SimpleFunction,
+  // IProviderCallback
 } from "../helpers/types";
 
 declare global {
@@ -69,12 +70,25 @@ const SModalContainer = styled.div<IModalContainerStyleProps>`
   pointer-events: ${({ show }) => (show ? "auto" : "none")};
 `;
 
+const SHeader = styled.div`
+  width: 100%;
+  background-color: #eee;
+  padding: 10px;
+  text-align: center;
+`;
+
 const SHitbox = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+`;
+
+const SClose = styled.a`
+  position: absolute;
+  top: 0px;
+  right: 10px;
 `;
 
 interface IModalCardStyleProps {
@@ -93,14 +107,11 @@ const SModalCard = styled.div<IModalCardStyleProps>`
   visibility: ${({ show }) => (show ? "visible" : "hidden")};
   pointer-events: ${({ show }) => (show ? "auto" : "none")};
 
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  max-width: ${({ maxWidth }) => (maxWidth ? `${maxWidth}px` : "800px")};
+  max-width: ${({ maxWidth }) => (maxWidth ? `${maxWidth}px` : "400px")};
   min-width: fit-content;
 
   @media screen and (max-width: 768px) {
-    max-width: ${({ maxWidth }) => (maxWidth ? `${maxWidth}px` : "500px")};
-    grid-template-columns: 1fr;
+    max-width: ${({ maxWidth }) => (maxWidth ? `${maxWidth}px` : "80%")};
   }
 `;
 
@@ -114,16 +125,20 @@ interface IModalProps {
 interface IModalState {
   show: boolean;
   lightboxOffset: number;
+  loggedIn: boolean;
 }
 
 const INITIAL_STATE: IModalState = {
   show: false,
-  lightboxOffset: 0
+  lightboxOffset: 0,
+  loggedIn: false
 };
+
 
 class Modal extends React.Component<IModalProps, IModalState> {
   constructor(props: IModalProps) {
     super(props);
+    this.logIn.bind(this);
     window.updateWeb3ConnectModal = async (state: IModalState) => {
       this.setState(state);
     };
@@ -157,6 +172,10 @@ class Modal extends React.Component<IModalProps, IModalState> {
         this.setState({ lightboxOffset });
       }
     }
+  }
+
+  logIn = (loggedIn: boolean) => {
+        this.setState({loggedIn}, () => console.log('Log', this.state.loggedIn));
   }
 
   public render = () => {
@@ -200,20 +219,21 @@ class Modal extends React.Component<IModalProps, IModalState> {
           <SHitbox onClick={onClose} />
           <SModalCard
             show={show}
-            maxWidth={800}
+            maxWidth={400}
             ref={c => (this.mainModalCard = c)}
           >
-            <Provider name={"MetaMask"} onClick={() => console.log("Click event")} />
-            <Provider name={"injected"} onClick={() => console.log("Click event")} />
-            <Provider name={"injected"} onClick={() => console.log("Click event")} />
-            <Provider name={"MetaMask"} onClick={() => console.log("Click event")} />
-            
-            
+            <SHeader>powered by decentraminds</SHeader>
+            <SClose onClick={onClose} href={"#"}>X</SClose>
+            {!this.state.loggedIn ? <Providers onLogIn={this.logIn}/> : <Wallet /> }
+
+
           </SModalCard>
         </SModalContainer>
       </SLightbox>
     );
   };
+
+
 }
 
 export default Modal;
