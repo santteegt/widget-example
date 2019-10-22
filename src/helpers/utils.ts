@@ -5,7 +5,7 @@ export function checkInjectedProviders(): IInjectedProvidersMap {
   const result = {
     injectedAvailable: !!window.ethereum || !!window.web3
   };
-  console.log('injectedAvailable', result.injectedAvailable)
+  console.log("injectedAvailable", result.injectedAvailable);
   if (result.injectedAvailable) {
     let fallbackProvider = true;
     providers.forEach(provider => {

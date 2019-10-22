@@ -1,0 +1,84 @@
+.menu {
+    height: auto;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.menu-item {
+    width: calc(33.33% - 20px);
+    float: left;
+    border: 1px solid #ccc;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-width: 0px;
+    margin: 0px 10px;
+    padding: 10px;
+}
+
+.menu-item .svg-inline--fa {
+    width: 1.5em;
+    height: 1.5em;
+    color: #ccc;
+}
+
+.menu-item .svg-inline--fa:hover {
+    color: rgb(64, 153, 255);
+}
+
+.content {
+    min-height: 200px;
+    border: 1px solid #ccc;
+    border-top-width: 0px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    margin: 0 10px 10px 10px;
+}
+
+.content h2 {
+    margin-top: 0px;
+    font-size: 30px;
+}
+
+.top-content-area img,
+.top-content-area span {
+    float: left;
+}
+
+.top-content-area a {
+    float: right;
+}
+
+.info-content-area .label {
+    font-weight: 600;
+    width: 30%;
+    float: left;
+}
+
+.info-content-area .value {
+    width: 60%;
+    float: left;
+}
+
+.info-content-area .action {
+    width: 10%;
+    float: left;
+}
+
+.btn {
+    border-radius: 5px;
+    padding: 10px;
+    background-color: rgb(64, 153, 255);
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.btn:hover {
+    background-color: rgba(64, 153, 255, 0.9);
+}
+
+.row {
+    height: auto;
+    overflow: hidden;
+    padding: 5px 20px;
+}
