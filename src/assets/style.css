@@ -1,3 +1,9 @@
+.top {
+    height: auto;
+    overflow: hidden;
+    padding: 0 10px;
+}
+
 .menu {
     height: auto;
     overflow: hidden;
@@ -64,6 +70,42 @@
     float: left;
 }
 
+.user-info > img {
+    width: 30%;
+    float: left;
+}
+
+.user-info > div {
+    width: 70%;
+    float: left;
+}
+
+.user-info > div span {
+    display: block;
+    width: 100%;
+}
+
+.counters span {
+    display: inline-block;
+    width: 30%;
+    float: left;
+    margin: 10px 1.5%;
+}
+
+.profile {
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0,0,0,0.8);
+    display: none;
+}
+
 .btn {
     border-radius: 5px;
     padding: 10px;
@@ -75,6 +117,10 @@
 
 .btn:hover {
     background-color: rgba(64, 153, 255, 0.9);
+}
+
+.logout-btn {
+    float: right;
 }
 
 .row {

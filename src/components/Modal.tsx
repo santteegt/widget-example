@@ -75,6 +75,8 @@ const SHeader = styled.div`
   background-color: #eee;
   padding: 10px;
   text-align: center;
+  border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
 `;
 
 const SHitbox = styled.div`
@@ -97,7 +99,7 @@ interface IModalCardStyleProps {
 }
 
 const SModalCard = styled.div<IModalCardStyleProps>`
-  position: relative;
+  position: absolute;
   width: 100%;
   background-color: rgb(255, 255, 255);
   border-radius: 12px;
@@ -109,6 +111,9 @@ const SModalCard = styled.div<IModalCardStyleProps>`
 
   max-width: ${({ maxWidth }) => (maxWidth ? `${maxWidth}px` : "400px")};
   min-width: fit-content;
+
+  top: 0px;
+  right: 0px;
 
   @media screen and (max-width: 768px) {
     max-width: ${({ maxWidth }) => (maxWidth ? `${maxWidth}px` : "80%")};

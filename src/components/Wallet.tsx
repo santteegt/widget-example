@@ -9,7 +9,8 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faTools, faUserCircle, faWallet, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import '../assets/style.css'
-// import noProfile from '../assets/noProfile.png'
+// import images from '../helpers/images'
+
 
 library.add(faTools, faUserCircle, faWallet, faCaretRight)
 
@@ -24,9 +25,8 @@ function WalletScreen() {
       <h2>Wallet</h2>
       <div className="top-content-area">
         <div className="row">
-            <img src="../assets/noProfile.png" />
+            <img src="noProfile.png" />
             <span>Name</span>
-            <a className="btn">Logout</a>
         </div>
       </div>
       <div className="info-content-area">
@@ -61,8 +61,30 @@ WalletScreen.navigationOptions = {
 
 function ProfileScreen() {
   return (
-    <div>
+    <div className="profile">
+      <div className="overlay">
+        <a className="btn">Create Profile</a>
+      </div>
       <h2>Profile</h2>
+      <div className="profile-content-area">
+        <div className="row user-info">
+            <img src="noProfile.png" />
+            <div>
+                <p>John Doe</p>
+                <span>Role</span>
+                <span>Institution</span>
+            </div>
+        </div>
+        <div className="row counters">
+            <span>10<br />Datasets</span>
+            <span>100<br />Followers</span>
+            <span>100<br />Following</span>
+        </div>
+        <div className="row">
+            <p>Profile Description</p>
+            <a className="btn">Save Profile</a>
+        </div>
+      </div>
     </div>
   );
 }
@@ -93,7 +115,10 @@ class WalletMenu extends React.Component<IWalletProps> {
         const activeKey = navigation.state.routes[navigation.state.index].key;
         const descriptor = descriptors[activeKey];
         return (
-        <div>
+        <div className="wallet">
+          <div className="top">
+            <a className="btn logout-btn" >Logout</a>
+          </div>
           <div className="menu">
           <div className="menu-item">
             <Link routeName="WalletScreen"><FontAwesomeIcon icon="wallet" /></Link>
