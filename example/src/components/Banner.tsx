@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import logo from '../assets/web3connect-logo.png'
+// import logo from '../assets/web3connect-logo.png'
 import { fonts, colors } from '../styles'
 
 const SBannerWrapper = styled.div`
@@ -15,18 +15,17 @@ const SBannerWrapper = styled.div`
   }
 `
 
-const SBanner = styled.div`
-  width: 45px;
-  height: 45px;
-  background: url(${logo}) no-repeat;
-  background-size: cover;
-  background-position: center;
-`
+// const SBanner = styled.div`
+//   width: 45px;
+//   height: 45px;
+//   background: url(${logo}) no-repeat;
+//   background-size: cover;
+//   background-position: center;
+// `
 
 const Banner = () => (
   <SBannerWrapper>
-    <SBanner />
-    <span>{`Web3Connect`}</span>
+    <span>{`Example App`}</span>
   </SBannerWrapper>
 )
 
