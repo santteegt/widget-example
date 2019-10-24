@@ -10,6 +10,8 @@ import { faTools, faUserCircle, faWallet, faCaretRight } from '@fortawesome/free
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import '../assets/style.css'
 // import images from '../helpers/images'
+// @ts-ignore
+import NoProfile from "../assets/noProfile.png";
 
 
 library.add(faTools, faUserCircle, faWallet, faCaretRight)
@@ -19,44 +21,54 @@ interface IWalletProps {
     navigation: any
 }
 
-function WalletScreen() {
-  return (
-    <div>
-      <h2>Wallet</h2>
-      <div className="top-content-area">
-        <div className="row">
-            <img src="noProfile.png" />
-            <span>Name</span>
+class WalletScreen extends React.Component<any, any> {
+
+  path: string = '';
+
+  navigationOptions = {
+    title: "Wallet",
+    linkName: "Wallet Page"
+  };
+
+  componentDidMount() {
+    console.log('WALLETSCREEN MOUNTED', this.props)
+  }
+
+  render() {
+    console.log('WALLETSCREEN RENDEr', this.props)
+    return (
+      <div>
+        <h2>Wallet</h2>
+        <div className="top-content-area">
+          <div className="row">
+              <img src={NoProfile} />
+              <span>Name</span>
+          </div>
+        </div>
+        <div className="info-content-area">
+              <div className="row">
+                <div className="label">Adress:</div>
+                <div className="value">0x2d21c5d5e1f2c65d67489641d31c654df64</div>
+                <div className="action"></div>
+              </div>
+              <div className="row">
+                <div className="label">Network:</div>
+                <div className="value">Ethereum (Mainnet)<br />10.00 ETH / 100.99 OCN</div>
+                <div className="action"><FontAwesomeIcon icon="caret-right" /></div>
+              </div>
+              <div className="row">
+                <div className="label">Ocean Network:</div>
+                <div className="value">Pacific<br />10.00 POA / 100.99 OCN</div>
+                <div className="action"><FontAwesomeIcon icon="caret-right" /></div>
+              </div>
+              <div className="row">
+                  <a className="btn">Open Wallet Provider</a>
+              </div>
         </div>
       </div>
-      <div className="info-content-area">
-            <div className="row">
-              <div className="label">Adress:</div>
-              <div className="value">0x2d21c5d5e1f2c65d67489641d31c654df64</div>
-              <div className="action"></div>
-            </div>
-            <div className="row">
-              <div className="label">Network:</div>
-              <div className="value">Ethereum (Mainnet)<br />10.00 ETH / 100.99 OCN</div>
-              <div className="action"><FontAwesomeIcon icon="caret-right" /></div>
-            </div>
-            <div className="row">
-              <div className="label">Ocean Network:</div>
-              <div className="value">Pacific<br />10.00 POA / 100.99 OCN</div>
-              <div className="action"><FontAwesomeIcon icon="caret-right" /></div>
-            </div>
-            <div className="row">
-                <a className="btn">Open Wallet Provider</a>
-            </div>
-      </div>
-    </div>
-  );
+    );
+  }
 }
-WalletScreen.path = "";
-WalletScreen.navigationOptions = {
-  title: "Wallet",
-  linkName: "Wallet Page"
-};
 
 
 function ProfileScreen() {
@@ -112,6 +124,7 @@ ToolsScreen.navigationOptions = {
 class WalletMenu extends React.Component<IWalletProps> {
     render() {
         const { descriptors, navigation } = this.props;
+        console.log('====+++===', this.props)
         const activeKey = navigation.state.routes[navigation.state.index].key;
         const descriptor = descriptors[activeKey];
         return (
@@ -121,19 +134,20 @@ class WalletMenu extends React.Component<IWalletProps> {
           </div>
           <div className="menu">
           <div className="menu-item">
-            <Link routeName="WalletScreen"><FontAwesomeIcon icon="wallet" /></Link>
+            <Link routeName="WalletScreen" params={{isLoggedIn: false}}><FontAwesomeIcon icon="wallet" /></Link>
           </div>
           <div className="menu-item">
-            <Link routeName="ProfileScreen"><FontAwesomeIcon icon="user-circle" /></Link>
+            <Link routeName="ProfileScreen" params={{isLoggedIn: false}}><FontAwesomeIcon icon="user-circle" /></Link>
           </div>
           <div className="menu-item">
-            <Link routeName="ToolsScreen"><FontAwesomeIcon icon="tools" /></Link>
+            <Link routeName="ToolsScreen" params={{isLoggedIn: false}}><FontAwesomeIcon icon="tools" /></Link>
           </div>
           </div>
           <div className="content">
               <SceneView
                 component={descriptor.getComponent()}
                 navigation={descriptor.navigation}
+                screenProps={{screenProps: true}}
               />
               </div>
         </div>
@@ -166,7 +180,7 @@ class Wallet extends React.Component {
 
   public render = () => {
     return (
-      <AppContainer />
+      <AppContainer/>
     );
   };
 }
