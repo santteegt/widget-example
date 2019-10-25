@@ -154,7 +154,7 @@ class WalletMenu extends React.Component<IWalletProps> {
           </div>
           <div className="menu">
           <div className="menu-item">
-            <Link routeName="WalletScreen"><FontAwesomeIcon icon="wallet" /></Link>
+            <a onClick={() => navigation.navigate('WalletScreen')}><FontAwesomeIcon icon="wallet" /></a>
           </div>
           <div className="menu-item">
             <Link routeName="ProfileScreen"><FontAwesomeIcon icon="user-circle" /></Link>
