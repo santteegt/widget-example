@@ -17,7 +17,8 @@ library.add(faTools, faUserCircle, faWallet, faCaretRight)
 
 interface IWalletProps {
     descriptors: any,
-    navigation: any
+    navigation: any,
+    screenProps: {}
 }
 
 class WalletScreen extends React.Component<any, any> {
@@ -86,7 +87,7 @@ class ProfileScreen extends React.Component<any, any> {
 
     render() {
         // const { screenProps } = this.props
-        // console.log('screenProps', screenProps)
+        // console.log('screenProps in ProfileScreen', screenProps)
         const { hasAccount } = this.state
         return (
             <div className="profile">
@@ -140,7 +141,8 @@ class ToolsScreen extends React.Component<any, any> {
 
 class WalletMenu extends React.Component<IWalletProps> {
     render() {
-        const { descriptors, navigation } = this.props;
+        console.log('===***', this.props)
+        const { descriptors, navigation, screenProps } = this.props;
         // console.log('====+++===', this.props)
         const activeKey = navigation.state.routes[navigation.state.index].key;
         const descriptor = descriptors[activeKey];
@@ -165,7 +167,7 @@ class WalletMenu extends React.Component<IWalletProps> {
               <SceneView
                 component={descriptor.getComponent()}
                 navigation={descriptor.navigation}
-                screenProps={{isLoggedIn: false}}
+                screenProps={screenProps}
               />
               </div>
         </div>
@@ -201,7 +203,7 @@ class Wallet extends React.Component {
 
   public render = () => {
     return (
-      <AppContainer/>
+      <AppContainer screenProps={{aja: true}}/>
     );
   };
 }
