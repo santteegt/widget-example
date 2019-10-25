@@ -75,12 +75,19 @@ class ProfileScreen extends React.Component<any, any> {
       linkName: "Wallet Page"
     };
 
-    createAccount = () => {
-        this.props.navigation.navigate('ProfileScreen', {hasAccount: true});
+    state = {
+      hasAccount: false
     }
 
-    render(){
-        const hasAccount = this.props.navigation.getParam('hasAccount');
+    createAccount = () => {
+      // TODO: manage account creation 
+      this.setState({hasAccount: true})
+    }
+
+    render() {
+        // const { screenProps } = this.props
+        // console.log('screenProps', screenProps)
+        const { hasAccount } = this.state
         return (
             <div className="profile">
                 <div className={!hasAccount ? "overlay" : "hidden" } onClick={() => {this.createAccount();}}>
@@ -158,7 +165,7 @@ class WalletMenu extends React.Component<IWalletProps> {
               <SceneView
                 component={descriptor.getComponent()}
                 navigation={descriptor.navigation}
-                screenProps={{screenProps: true}}
+                screenProps={{isLoggedIn: false}}
               />
               </div>
         </div>
@@ -185,14 +192,6 @@ const WalletNavigator = createNavigator(
     {
         initialRouteName: "WalletScreen"
     }
-    // {
-    //   Wallet: WalletScreen,
-    //   Profile: ProfileScreen,
-    //   Tools: ToolsScreen,
-    // },
-    // {
-    //   initialRouteName: 'Home',
-    // }
 );
 
 const AppContainer = createBrowserApp(WalletNavigator);
