@@ -9,7 +9,6 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faTools, faUserCircle, faWallet, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import '../assets/style.css'
-// import images from '../helpers/images'
 // @ts-ignore
 import NoProfile from "../assets/noProfile.png";
 
@@ -35,7 +34,7 @@ class WalletScreen extends React.Component<any, any> {
   }
 
   render() {
-    console.log('WALLETSCREEN RENDEr', this.props)
+    // console.log('WALLETSCREEN RENDEr', this.props)
     return (
       <div>
         <h2>Wallet</h2>
@@ -71,76 +70,93 @@ class WalletScreen extends React.Component<any, any> {
 }
 
 
-function ProfileScreen() {
-  return (
-    <div className="profile">
-      <div className="overlay">
-        <a className="btn">Create Profile</a>
-      </div>
-      <h2>Profile</h2>
-      <div className="profile-content-area">
-        <div className="row user-info">
-            <img src="noProfile.png" />
-            <div>
-                <p>John Doe</p>
-                <span>Role</span>
-                <span>Institution</span>
+class ProfileScreen extends React.Component<any, any> {
+    path: string = '';
+
+    navigationOptions = {
+      title: "Wallet",
+      linkName: "Wallet Page"
+    };
+
+    createAccount = () => {
+        this.props.navigation.navigate('ProfileScreen', {hasAccount: true});
+    }
+
+    render(){
+        const hasAccount = this.props.navigation.getParam('hasAccount');
+        return (
+            <div className="profile">
+                <div className={!hasAccount ? "overlay" : "hidden" } onClick={() => {this.createAccount();}}>
+                    <a className="btn">Create Profile</a>
+                </div>
+            <h2>Profile</h2>
+            <div className="profile-content-area">
+                <div className="row user-info">
+                    <img src={NoProfile} />
+                    <div>
+                    <p>John Doe</p>
+                    <span>Role</span>
+                    <span>Institution</span>
+                    </div>
+                    </div>
+                    <div className="row counters">
+                    <span>10<br />Datasets</span>
+                    <span>100<br />Followers</span>
+                    <span>100<br />Following</span>
+                    </div>
+                    <div className="row">
+                    <p>Profile Description</p>
+                    <a className="btn">Save Profile</a>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div className="row counters">
-            <span>10<br />Datasets</span>
-            <span>100<br />Followers</span>
-            <span>100<br />Following</span>
-        </div>
-        <div className="row">
-            <p>Profile Description</p>
-            <a className="btn">Save Profile</a>
-        </div>
-      </div>
-    </div>
-  );
-}
-ProfileScreen.path = "";
-ProfileScreen.navigationOptions = {
-  title: "Profile",
-  linkName: "Profile Page"
-};
+        );
+    }
 
-function ToolsScreen() {
-  return (
-    <div>
-      <h2>Tools</h2>
-    </div>
-  );
 }
-ToolsScreen.path = "";
-ToolsScreen.navigationOptions = {
-  title: "Tools",
-  linkName: "Tools Page"
-};
 
+
+class ToolsScreen extends React.Component<any, any> {
+
+    path: string = '';
+
+    navigationOptions = {
+      title: "Wallet",
+      linkName: "Wallet Page"
+    };
+
+    render(){
+        return (
+            <div>
+            <h2>Tools</h2>
+            </div>
+        );
+    }
+
+}
 
 
 class WalletMenu extends React.Component<IWalletProps> {
     render() {
         const { descriptors, navigation } = this.props;
-        console.log('====+++===', this.props)
+        // console.log('====+++===', this.props)
         const activeKey = navigation.state.routes[navigation.state.index].key;
         const descriptor = descriptors[activeKey];
+        // const hasAccount =
         return (
         <div className="wallet">
           <div className="top">
-            <a className="btn logout-btn" >Logout</a>
+            <a className="btn logout-btn" onClick={() => {} }>Logout</a>
           </div>
           <div className="menu">
           <div className="menu-item">
-            <Link routeName="WalletScreen" params={{isLoggedIn: false}}><FontAwesomeIcon icon="wallet" /></Link>
+            <Link routeName="WalletScreen"><FontAwesomeIcon icon="wallet" /></Link>
           </div>
           <div className="menu-item">
-            <Link routeName="ProfileScreen" params={{isLoggedIn: false}}><FontAwesomeIcon icon="user-circle" /></Link>
+            <Link routeName="ProfileScreen"><FontAwesomeIcon icon="user-circle" /></Link>
           </div>
           <div className="menu-item">
-            <Link routeName="ToolsScreen" params={{isLoggedIn: false}}><FontAwesomeIcon icon="tools" /></Link>
+            <Link routeName="ToolsScreen"><FontAwesomeIcon icon="tools" /></Link>
           </div>
           </div>
           <div className="content">
@@ -162,7 +178,9 @@ const WalletNavigator = createNavigator(
       ProfileScreen,
       ToolsScreen
     }),
-    {}
+    {
+        initialRouteName: "WalletScreen"
+    }
     // {
     //   Wallet: WalletScreen,
     //   Profile: ProfileScreen,
