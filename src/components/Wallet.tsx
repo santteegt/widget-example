@@ -22,8 +22,6 @@ interface IWalletProps {
 
 class WalletScreen extends React.Component<any, any> {
 
-  path: string = '';
-
   navigationOptions = {
     title: "Wallet",
     linkName: "Wallet Page"
@@ -71,7 +69,6 @@ class WalletScreen extends React.Component<any, any> {
 
 
 class ProfileScreen extends React.Component<any, any> {
-    path: string = '';
 
     navigationOptions = {
       title: "Wallet",
@@ -117,8 +114,6 @@ class ProfileScreen extends React.Component<any, any> {
 
 
 class ToolsScreen extends React.Component<any, any> {
-
-    path: string = '';
 
     navigationOptions = {
       title: "Wallet",
@@ -174,9 +169,18 @@ class WalletMenu extends React.Component<IWalletProps> {
 const WalletNavigator = createNavigator(
     WalletMenu,
     SwitchRouter({
-      WalletScreen,
-      ProfileScreen,
-      ToolsScreen
+      WalletScreen: {
+        screen: WalletScreen,
+        path: ''
+      },
+      ProfileScreen: {
+        screen: ProfileScreen,
+        path: ''
+      },
+      ToolsScreen: {
+        screen: ToolsScreen,
+        path: ''
+      }
     }),
     {
         initialRouteName: "WalletScreen"
