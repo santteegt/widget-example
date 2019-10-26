@@ -27,7 +27,7 @@
     color: #ccc;
 }
 
-.menu-item .svg-inline--fa:hover {
+.menu-item .svg-inline--fa:hover, .menu-item .active .svg-inline--fa {
     color: rgb(64, 153, 255);
 }
 

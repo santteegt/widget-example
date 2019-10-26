@@ -4,7 +4,7 @@ import {
   SwitchRouter,
   SceneView
 } from "@react-navigation/core";
-import { createBrowserApp, Link } from "@react-navigation/web";
+import { createBrowserApp } from "@react-navigation/web";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faTools, faUserCircle, faWallet, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -15,10 +15,18 @@ import NoProfile from "../assets/noProfile.png";
 
 library.add(faTools, faUserCircle, faWallet, faCaretRight)
 
-interface IWalletProps {
+interface IWalletMenuProps {
     descriptors: any,
     navigation: any,
-    screenProps: {}
+    screenProps: { hasAccount: boolean, logOut: any, createAccount: any }
+}
+
+interface IWalletProps {
+  onLogOut: any;
+}
+
+interface IWalletState {
+  hasAccount: boolean;
 }
 
 class WalletScreen extends React.Component<any, any> {
@@ -76,22 +84,13 @@ class ProfileScreen extends React.Component<any, any> {
       linkName: "Wallet Page"
     };
 
-    state = {
-      hasAccount: false
-    }
-
-    createAccount = () => {
-      // TODO: manage account creation 
-      this.setState({hasAccount: true})
-    }
-
     render() {
-        // const { screenProps } = this.props
+        const { screenProps } = this.props
         // console.log('screenProps in ProfileScreen', screenProps)
-        const { hasAccount } = this.state
+        const hasAccount = screenProps.hasAccount;
         return (
             <div className="profile">
-                <div className={!hasAccount ? "overlay" : "hidden" } onClick={() => {this.createAccount();}}>
+                <div className={!hasAccount ? "overlay" : "hidden" } onClick={() => {screenProps.createAccount();}}>
                     <a className="btn">Create Profile</a>
                 </div>
             <h2>Profile</h2>
@@ -139,9 +138,9 @@ class ToolsScreen extends React.Component<any, any> {
 }
 
 
-class WalletMenu extends React.Component<IWalletProps> {
+class WalletMenu extends React.Component<IWalletMenuProps> {
     render() {
-        console.log('===***', this.props)
+        // console.log('===***', this.props)
         const { descriptors, navigation, screenProps } = this.props;
         // console.log('====+++===', this.props)
         const activeKey = navigation.state.routes[navigation.state.index].key;
@@ -150,17 +149,17 @@ class WalletMenu extends React.Component<IWalletProps> {
         return (
         <div className="wallet">
           <div className="top">
-            <a className="btn logout-btn" onClick={() => {} }>Logout</a>
+            <a className="btn logout-btn" onClick={() => { screenProps.logOut(false); } }>Logout</a>
           </div>
           <div className="menu">
           <div className="menu-item">
-            <a onClick={() => navigation.navigate('WalletScreen')}><FontAwesomeIcon icon="wallet" /></a>
+            <a onClick={() => navigation.navigate('WalletScreen')} className={activeKey == 'WalletScreen' ? "active" : ""}><FontAwesomeIcon icon="wallet" /></a>
           </div>
           <div className="menu-item">
-            <Link routeName="ProfileScreen"><FontAwesomeIcon icon="user-circle" /></Link>
+            <a onClick={() => navigation.navigate('ProfileScreen')} className={activeKey == 'ProfileScreen' ? "active" : ""}><FontAwesomeIcon icon="user-circle" /></a>
           </div>
           <div className="menu-item">
-            <Link routeName="ToolsScreen"><FontAwesomeIcon icon="tools" /></Link>
+            <a onClick={() => navigation.navigate('ToolsScreen')} className={activeKey == 'ToolsScreen' ? "active" : ""}><FontAwesomeIcon icon="tools" /></a>
           </div>
           </div>
           <div className="content">
@@ -198,14 +197,21 @@ const WalletNavigator = createNavigator(
 
 const AppContainer = createBrowserApp(WalletNavigator);
 
+class Wallet extends React.Component<IWalletProps, IWalletState> {
 
-class Wallet extends React.Component {
+    state : IWalletState = { hasAccount: false }
 
-  public render = () => {
-    return (
-      <AppContainer screenProps={{aja: true}}/>
-    );
-  };
+    createAccount = () => {
+        // TODO: manage account creation
+        this.setState({hasAccount: true})
+    }
+
+    public render = () => {
+        const { onLogOut } = this.props;
+        return (
+            <AppContainer screenProps={{ hasAccount: this.state.hasAccount, logOut: onLogOut, createAccount: this.createAccount }}/>
+        );
+    };
 }
 
 // const AppContainer = createAppContainer(WalletNavigator);

@@ -229,7 +229,7 @@ class Modal extends React.Component<IModalProps, IModalState> {
           >
             <SHeader>powered by decentraminds</SHeader>
             <SClose onClick={onClose} href={"#"}>X</SClose>
-            {!this.state.loggedIn ? <Providers onLogIn={this.logIn}/> : <Wallet /> }
+            {!this.state.loggedIn ? <Providers onLogIn={this.logIn}/> : <Wallet onLogOut={this.logIn}/> }
 
 
           </SModalCard>
