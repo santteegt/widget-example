@@ -36,7 +36,7 @@ export const STitle = styled.div`
 
 export const SDescription = styled.div`
   width: 100%;
-  font-size: 18px;
+  font-size: 14px;
   margin: 0.333em 0;
   color: rgb(169, 169, 188);
   @media screen and (max-width: 768px) {

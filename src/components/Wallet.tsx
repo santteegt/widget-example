@@ -8,6 +8,7 @@ import { createBrowserApp } from "@react-navigation/web";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faTools, faUserCircle, faWallet, faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import '../assets/style.css'
 // @ts-ignore
 import NoProfile from "../assets/noProfile.png";
@@ -18,7 +19,7 @@ library.add(faTools, faUserCircle, faWallet, faCaretRight)
 interface IWalletMenuProps {
     descriptors: any,
     navigation: any,
-    screenProps: { hasAccount: boolean, logOut: any, createAccount: any }
+    screenProps: { hasAccount: boolean, logOut: any, createAccount: any, copied: boolean }
 }
 
 interface IWalletProps {
@@ -41,20 +42,31 @@ class WalletScreen extends React.Component<any, any> {
   }
 
   render() {
+    const { navigation, screenProps } = this.props
     // console.log('WALLETSCREEN RENDEr', this.props)
     return (
       <div>
-        <h2>Wallet</h2>
-        <div className="top-content-area">
-          <div className="row">
-              <img src={NoProfile} />
-              <span>Name</span>
+        <div className="profile-content-area">
+          <div className="row user-info">
+              <a className="hover-prof" onClick={() => navigation.navigate('ProfileScreen')}>
+                  <img src={NoProfile} />
+              </a>
+              <div className="info">
+              <p>John Doe</p>
+              <span>Role</span>
+              <span>Institution</span>
+              </div>
           </div>
         </div>
         <div className="info-content-area">
-              <div className="row">
-                <div className="label">Adress:</div>
-                <div className="value">0x2d21c5d5e1f2c65d67489641d31c654df64</div>
+              <div className="row address">
+                <div className="label">Address:</div>
+                <div className="value">
+                    <CopyToClipboard text="0x255A8eB9aa6811Eb1330B21ddeedE8AB8EeAE62A"
+                      onCopy={ () => { screenProps.copied = true; }  }>
+                        <span>0x255A8eB9aa6811Eb1330B21ddeedE8AB8EeAE62A</span>
+                    </CopyToClipboard>
+                </div>
                 <div className="action"></div>
               </div>
               <div className="row">
@@ -93,23 +105,24 @@ class ProfileScreen extends React.Component<any, any> {
                 <div className={!hasAccount ? "overlay" : "hidden" } onClick={() => {screenProps.createAccount();}}>
                     <a className="btn">Create Profile</a>
                 </div>
-            <h2>Profile</h2>
             <div className="profile-content-area">
                 <div className="row user-info">
-                    <img src={NoProfile} />
-                    <div>
+                    <a className="hover-text">
+                        <img src={NoProfile} />
+                    </a>
+                    <div className="info">
                     <p>John Doe</p>
                     <span>Role</span>
                     <span>Institution</span>
                     </div>
                     </div>
                     <div className="row counters">
-                    <span>10<br />Datasets</span>
-                    <span>100<br />Followers</span>
-                    <span>100<br />Following</span>
+                        <p><span className="number">10</span>Datasets</p>
+                        <p><span className="number">100</span>Followers</p>
+                        <p><span className="number">100</span>Following</p>
                     </div>
                     <div className="row">
-                    <p>Profile Description</p>
+                    <p className="desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla aliquam iaculis hendrerit. Vivamus id purus dolor. Duis lacinia ultrices neque, ac laoreet leo maximus ut. Praesent sapien nisl, finibus quis urna et, faucibus rutrum diam.</p>
                     <a className="btn">Save Profile</a>
                     </div>
                 </div>
@@ -209,7 +222,7 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
     public render = () => {
         const { onLogOut } = this.props;
         return (
-            <AppContainer screenProps={{ hasAccount: this.state.hasAccount, logOut: onLogOut, createAccount: this.createAccount }}/>
+            <AppContainer screenProps={{ hasAccount: this.state.hasAccount, logOut: onLogOut, createAccount: this.createAccount, copied: false }}/>
         );
     };
 }

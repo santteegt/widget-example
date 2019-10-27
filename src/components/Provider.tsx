@@ -4,7 +4,7 @@ import {
   getProviderInfoByName,
   formatProviderDescription
 } from "../helpers/utils";
-import { SIcon, STitle, SDescription } from "./common";
+import { SIcon, SDescription } from "./common";
 
 const SProviderContainer = styled.div`
   transition: background-color 0.2s ease-in-out;
@@ -15,16 +15,9 @@ const SProviderContainer = styled.div`
   align-items: center;
   background-color: rgb(255, 255, 255);
   border-radius: 12px;
-  padding: 24px 16px;
+  padding: 20px 15px;
   @media screen and (max-width: 768px) {
     padding: 1vw;
-  }
-`;
-
-const SName = styled(STitle)`
-  color: rgb(12, 12, 13);
-  @media screen and (max-width: 768px) {
-    font-size: 5vw;
   }
 `;
 
@@ -37,10 +30,10 @@ const SProvider = styled.div`
   flex-direction: column;
   cursor: pointer;
   border-radius: 0;
-  border: 1px solid rgba(195, 195, 195, 0.14);
+  /* border: 1px solid rgba(195, 195, 195, 0.14); */
   @media (hover: hover) {
     &:hover ${SProviderContainer} {
-      background-color: rgba(195, 195, 195, 0.14);
+      background-color: rgba(255, 255, 255, .9);;
     }
   }
 `;
@@ -60,7 +53,6 @@ const Provider = (props: IProviderProps) => {
         <SIcon noShadow={providerInfo.styled.noShadow}>
           <img src={providerInfo.logo} alt={providerInfo.name} />
         </SIcon>
-        <SName>{providerInfo.name}</SName>
         <SDescription>{description}</SDescription>
       </SProviderContainer>
     </SProvider>

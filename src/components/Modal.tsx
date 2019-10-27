@@ -72,11 +72,12 @@ const SModalContainer = styled.div<IModalContainerStyleProps>`
 
 const SHeader = styled.div`
   width: 100%;
-  background-color: #eee;
+  background-color: #2a2d47;
   padding: 10px;
   text-align: center;
   border-top-right-radius: 12px;
   border-top-left-radius: 12px;
+  font-size: 12px;
 `;
 
 const SHitbox = styled.div`
@@ -89,8 +90,13 @@ const SHitbox = styled.div`
 
 const SClose = styled.a`
   position: absolute;
-  top: 0px;
+  top: 10px;
   right: 10px;
+  color: #fff;
+
+  &:hover {
+      color: #fff;
+  }
 `;
 
 interface IModalCardStyleProps {
@@ -101,7 +107,7 @@ interface IModalCardStyleProps {
 const SModalCard = styled.div<IModalCardStyleProps>`
   position: absolute;
   width: 100%;
-  background-color: rgb(255, 255, 255);
+  background-color: #8b98a9;
   border-radius: 12px;
   margin: 10px;
   padding: 0;
@@ -109,7 +115,7 @@ const SModalCard = styled.div<IModalCardStyleProps>`
   visibility: ${({ show }) => (show ? "visible" : "hidden")};
   pointer-events: ${({ show }) => (show ? "auto" : "none")};
 
-  max-width: ${({ maxWidth }) => (maxWidth ? `${maxWidth}px` : "400px")};
+  max-width: ${({ maxWidth }) => (maxWidth ? `${maxWidth}px` : "300px")};
   min-width: fit-content;
 
   top: 0px;
@@ -224,10 +230,10 @@ class Modal extends React.Component<IModalProps, IModalState> {
           <SHitbox onClick={onClose} />
           <SModalCard
             show={show}
-            maxWidth={400}
+            maxWidth={300}
             ref={c => (this.mainModalCard = c)}
           >
-            <SHeader>powered by decentraminds</SHeader>
+            <SHeader>powered by <span className="logo">DECENTRAMINDS.ai</span></SHeader>
             <SClose onClick={onClose} href={"#"}>X</SClose>
             {!this.state.loggedIn ? <Providers onLogIn={this.logIn}/> : <Wallet onLogOut={this.logIn}/> }
 

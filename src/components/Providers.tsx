@@ -13,8 +13,8 @@ class Providers extends React.Component<IProvidersProps, any> {
         const { onLogIn } = this.props;
         return(
             <div>
-                <Provider name={"MetaMask"} onClick={() => onLogIn(true) } />
-                <Provider name={"injected"} onClick={() => console.log("Click event")} />
+                <Provider name={"NewUser"} onClick={() => onLogIn(true) } />
+                <Provider name={"ConnectWallet"} onClick={() => console.log("Click event")} />
             </div>
         )
     }

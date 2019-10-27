@@ -33,6 +33,10 @@ import TokenaryLogo from "../assets/tokenary.png";
 import OperaLogo from "../assets/opera.svg";
 // @ts-ignore
 import TorusLogo from "../assets/torus.png";
+// @ts-ignore
+import NewUserLogo from "../assets/newUser.png";
+// @ts-ignore
+import WalletLogo from "../assets/wallet.png";
 
 export const providerPackages = {
   walletconnect: {
@@ -214,6 +218,24 @@ const providers: IProviderInfo[] = [
     logo: TorusLogo,
     type: "web",
     check: "isTorus",
+    styled: {
+      noShadow: true
+    }
+  },
+  {
+    name: "NewUser",
+    logo: NewUserLogo,
+    type: "web",
+    check: "isNewUser",
+    styled: {
+      noShadow: true
+    }
+  },
+  {
+    name: "ConnectWallet",
+    logo: WalletLogo,
+    type: "web",
+    check: "isWallet",
     styled: {
       noShadow: true
     }

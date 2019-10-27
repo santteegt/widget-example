@@ -1,7 +1,13 @@
 .top {
     height: auto;
     overflow: hidden;
-    padding: 0 10px;
+    padding: 10px 10px 0 10px;
+}
+
+.row {
+    height: auto;
+    overflow: hidden;
+    padding: 5px;
 }
 
 .menu {
@@ -11,37 +17,55 @@
 }
 
 .menu-item {
-    width: calc(33.33% - 20px);
+    width: calc(33.33% - 6.75px);
     float: left;
-    border: 1px solid #ccc;
+    border: 1px solid #2a2d47;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
     border-bottom-width: 0px;
-    margin: 0px 10px;
+    margin: 0px 5px;
+    cursor: pointer;
+}
+
+.menu-item:nth-child(2) {
+    margin: 0px;
+}
+
+.menu-item a {
+    display: block;
     padding: 10px;
+}
+
+.menu-item .active {
+    background-color: rgba(42, 45, 71, .1);
+}
+
+.menu-item:hover {
+    background-color: rgba(42, 45, 71, .1);
 }
 
 .menu-item .svg-inline--fa {
     width: 1.5em;
     height: 1.5em;
-    color: #ccc;
+    color: #fff;
 }
 
-.menu-item .svg-inline--fa:hover, .menu-item .active .svg-inline--fa {
-    color: rgb(64, 153, 255);
+.menu-item .svg-inline--fa:hover, .menu-item .active .svg-inline--fa, .menu-item:hover .svg-inline--fa {
+    color: #2a2d47;
 }
 
 .content {
     min-height: 200px;
-    border: 1px solid #ccc;
+    border: 1px solid #2a2d47;
     border-top-width: 0px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-    margin: 0 10px 10px 10px;
+    margin: 0 5px 10px 5px;
 }
 
 .content h2 {
     margin-top: 0px;
+    margin-bottom: 0px;
     font-size: 30px;
 }
 
@@ -51,24 +75,50 @@
     float: left;
 }
 
-.top-content-area span {
+.top-content-area .row > div {
     float: left;
-    line-height: 50px;
 }
 
-.top-content-area a {
-    float: right;
+.top-content-area .row > div span {
+    width: 100%;
+    display: block;
+}
+
+.top-content-area .row > div a {
+    width: 100%;
+    display: block;
+    cursor: pointer;
+    color: #242943;
+    text-decoration: underline;
+}
+
+.top-content-area .row {
+    padding-top: 10px;
 }
 
 .info-content-area .label {
     font-weight: 600;
-    width: 30%;
+    width: 25%;
     float: left;
+    text-align: left;
 }
 
 .info-content-area .value {
-    width: 60%;
+    width: 65%;
     float: left;
+}
+
+.info-content-area .address .label {
+    width: 100%;
+}
+
+.info-content-area .address .value {
+    width: 100%;
+    padding: 5px;
+    font-size: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .info-content-area .action {
@@ -76,30 +126,76 @@
     float: left;
 }
 
-.user-info > img {
+.user-info {
+    padding: 10px 15px;
+}
+
+.user-info .hover-text,
+.user-info .hover-prof {
     width: 25%;
     float: left;
+    position: relative;
+    cursor: pointer;
 }
 
-.user-info > div {
+.user-info .hover-text:hover::after,
+.user-info .hover-prof:hover::after {
+    content: 'OPEN \A 3BOX';
+    position: absolute;
+    bottom: 0px;
+    line-height: 12px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #2a2d47;
+    width: 100%;
+    left: 0;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    font-size: 9px;
+    white-space: pre;
+}
+
+.user-info .hover-prof:hover::after {
+    content: 'PROFILE';
+    line-height: 24px;
+}
+
+.user-info .info {
     width: 75%;
     float: left;
+    text-align: left;
+    padding-left: 30px;
 }
 
-.user-info > div span {
+.user-info .info p{
+    margin-bottom: 0px;
+}
+
+.user-info .info span {
     display: block;
     width: 100%;
 }
 
-.counters span {
+.counters p {
     display: inline-block;
     width: 30%;
     float: left;
     margin: 10px 1.5%;
 }
 
+
+.counters span.number {
+    font-size: 20px;
+    width: 100%;
+    display: block;
+}
+
 .profile {
     position: relative;
+}
+
+.profile .desc {
+    text-align: justify;
 }
 
 .overlay {
@@ -110,6 +206,14 @@
     right: 0;
     background-color: rgba(0,0,0,0.8);
     display: block;
+    z-index: 2;
+}
+
+.overlay .btn {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%);
+    -webkit-transform: translate(-50%);
 }
 
 .hidden {
@@ -119,22 +223,34 @@
 .btn {
     border-radius: 5px;
     padding: 10px;
-    background-color: rgb(64, 153, 255);
+    background-color: #2a2d47;
     color: #fff;
     cursor: pointer;
     display: inline-block;
 }
 
 .btn:hover {
-    background-color: rgba(64, 153, 255, 0.9);
+    background-color: rgba(42, 45, 71, .8);
+    color: #fff;
 }
 
 .logout-btn {
     float: right;
 }
 
-.row {
-    height: auto;
-    overflow: hidden;
-    padding: 5px 20px;
+span.logo {
+    background-color: #fff;
+    color: #242943;
+    display: inline-block;
+    line-height: 1.65em;
+    margin-right: 0.325em;
+    padding: 0 0.375em 0 0.375em;
+    font-weight: 600;
+}
+
+.wallet {
+    background-color: #8b98a9;
+    font-size: 12px;
+    color: #2a2d47;
+    width: 300px;
 }

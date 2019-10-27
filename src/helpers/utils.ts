@@ -115,22 +115,15 @@ export function isMobile(): boolean {
 
 export function formatProviderDescription(providerInfo: IProviderInfo) {
   let description = "";
-  switch (providerInfo.type) {
-    case "injected":
-      description = `Connect to your ${providerInfo.name} Wallet`;
-      break;
-    case "web":
-      if (providerInfo.name === "Google") {
-        description = `Connect with your Google account via Torus`;
-      } else {
-        description = `Connect with your ${providerInfo.name} account`;
-      }
-      break;
-    case "qrcode":
-      description = `Scan with ${providerInfo.name} to connect`;
-      break;
+  switch (providerInfo.check) {
+    case "isNewUser":
+        description = `I'm a new user (Burner Wallet)`;
+        break;
+    case "isWallet":
+        description = `Connect Wallet`;
+        break;
     default:
-      break;
+        break;
   }
   return description;
 }
