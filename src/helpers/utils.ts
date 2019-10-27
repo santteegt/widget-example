@@ -117,13 +117,13 @@ export function formatProviderDescription(providerInfo: IProviderInfo) {
   let description = "";
   switch (providerInfo.check) {
     case "isNewUser":
-        description = `I'm a new user (Burner Wallet)`;
-        break;
+      description = `I'm a new user (Burner Wallet)`;
+      break;
     case "isWallet":
-        description = `Connect Wallet`;
-        break;
+      description = `Connect Wallet`;
+      break;
     default:
-        break;
+      break;
   }
   return description;
 }
