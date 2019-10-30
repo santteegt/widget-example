@@ -2,7 +2,9 @@ import * as React from "react";
 import Provider from "./Provider";
 
 interface IProvidersProps {
-  onLogIn: any;
+  onLogIn: (boolean) => any;
+  connectBurner: () => any;
+  connectWallet: () => any;
 }
 
 
@@ -10,11 +12,14 @@ interface IProvidersProps {
 class Providers extends React.Component<IProvidersProps, any> {
 
     public render = () => {
-        const { onLogIn } = this.props;
+        const { onLogIn, connectBurner, connectWallet } = this.props;
         return(
             <div>
-                <Provider name={"NewUser"} onClick={() => onLogIn(true) } />
-                <Provider name={"ConnectWallet"} onClick={() => console.log("Click event")} />
+                <Provider name={"NewUser"} onClick={() => {
+                    onLogIn(true)
+                    connectBurner() 
+                }} />
+                <Provider name={"ConnectWallet"} onClick={() => connectWallet()} />
             </div>
         )
     }

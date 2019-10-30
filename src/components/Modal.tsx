@@ -128,6 +128,8 @@ const SModalCard = styled.div<IModalCardStyleProps>`
 
 interface IModalProps {
   // providers: IProviderCallback[];
+  connectBurner: () => any;
+  connectWallet: () => any;
   onClose: SimpleFunction;
   resetState: SimpleFunction;
   lightboxOpacity: number;
@@ -189,11 +191,15 @@ class Modal extends React.Component<IModalProps, IModalState> {
         this.setState({loggedIn}, () => console.log('Log', this.state.loggedIn));
   }
 
+  connectWallet = () => {
+
+  }
+
   public render = () => {
     const { show, lightboxOffset } = this.state;
 
     // const { onClose, lightboxOpacity, providers } = this.props;
-    const { onClose, lightboxOpacity } = this.props;
+    const { connectBurner, connectWallet, onClose, lightboxOpacity } = this.props;
 
     // return (
     //   <SLightbox
@@ -235,7 +241,11 @@ class Modal extends React.Component<IModalProps, IModalState> {
           >
             <SHeader>powered by <span className="logo">DECENTRAMINDS.ai</span></SHeader>
             <SClose onClick={onClose} href={"#"}>X</SClose>
-            {!this.state.loggedIn ? <Providers onLogIn={this.logIn}/> : <Wallet onLogOut={this.logIn}/> }
+            {!this.state.loggedIn ? (
+              <Providers onLogIn={this.logIn} connectBurner={connectBurner} connectWallet={connectWallet}/>
+              ) : (
+              <Wallet onLogOut={this.logIn}/> 
+            )}
 
 
           </SModalCard>
