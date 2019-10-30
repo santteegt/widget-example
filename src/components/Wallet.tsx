@@ -30,6 +30,36 @@ interface IWalletState {
   hasAccount: boolean;
 }
 
+class MainMenu extends React.Component<any, any> {
+
+
+    render() {
+        const { navigation, logOut } = this.props
+        let activeKey = 'WalletScreen'
+        if(navigation.state.index){
+            activeKey = navigation.state.routes[navigation.state.index].key;
+        }
+        return(
+            <div>
+                <div className="top">
+                  <a className="btn logout-btn" onClick={() => { logOut(false); } }>Logout</a>
+                </div>
+                <div className="menu">
+                <div className="menu-item">
+                  <a onClick={() => navigation.navigate('WalletScreen')} className={activeKey == 'WalletScreen' ? "active" : ""}><FontAwesomeIcon icon="wallet" /></a>
+                </div>
+                <div className="menu-item">
+                  <a onClick={() => navigation.navigate('ProfileScreen')} className={activeKey == 'ProfileScreen' ? "active" : ""}><FontAwesomeIcon icon="user-circle" /></a>
+                </div>
+                <div className="menu-item">
+                  <a onClick={() => navigation.navigate('ToolsScreen')} className={activeKey == 'ToolsScreen' ? "active" : ""}><FontAwesomeIcon icon="tools" /></a>
+                </div>
+                </div>
+            </div>
+        )
+    }
+}
+
 class WalletScreen extends React.Component<any, any> {
 
   navigationOptions = {
@@ -46,6 +76,7 @@ class WalletScreen extends React.Component<any, any> {
     // console.log('WALLETSCREEN RENDEr', this.props)
     return (
       <div>
+        <MainMenu navigation={navigation} logOut={screenProps.logOut}/>
         <div className="profile-content-area">
           <div className="row user-info">
               <a className="hover-prof" onClick={() => navigation.navigate('ProfileScreen')}>
@@ -97,36 +128,37 @@ class ProfileScreen extends React.Component<any, any> {
     };
 
     render() {
-        const { screenProps } = this.props
+        const { navigation, screenProps } = this.props
         // console.log('screenProps in ProfileScreen', screenProps)
         const hasAccount = screenProps.hasAccount;
         return (
             <div className="profile">
+                <MainMenu navigation={navigation} logOut={screenProps.logOut}/>
                 <div className={!hasAccount ? "overlay" : "hidden" } onClick={() => {screenProps.createAccount();}}>
                     <a className="btn">Create Profile</a>
                 </div>
-            <div className="profile-content-area">
-                <div className="row user-info">
-                    <a className="hover-text">
-                        <img src={NoProfile} />
-                    </a>
-                    <div className="info">
-                    <p>John Doe</p>
-                    <span>Role</span>
-                    <span>Institution</span>
-                    </div>
-                    </div>
-                    <div className="row counters">
-                        <p><span className="number">10</span>Datasets</p>
-                        <p><span className="number">100</span>Followers</p>
-                        <p><span className="number">100</span>Following</p>
-                    </div>
-                    <div className="row">
-                    <p className="desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla aliquam iaculis hendrerit. Vivamus id purus dolor. Duis lacinia ultrices neque, ac laoreet leo maximus ut. Praesent sapien nisl, finibus quis urna et, faucibus rutrum diam.</p>
-                    <a className="btn">Save Profile</a>
+                <div className="profile-content-area">
+                    <div className="row user-info">
+                        <a className="hover-text">
+                            <img src={NoProfile} />
+                        </a>
+                        <div className="info">
+                        <p>John Doe</p>
+                        <span>Role</span>
+                        <span>Institution</span>
+                        </div>
+                        </div>
+                        <div className="row counters">
+                            <p><span className="number">10</span>Datasets</p>
+                            <p><span className="number">100</span>Followers</p>
+                            <p><span className="number">100</span>Following</p>
+                        </div>
+                        <div className="row">
+                        <p className="desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla aliquam iaculis hendrerit. Vivamus id purus dolor. Duis lacinia ultrices neque, ac laoreet leo maximus ut. Praesent sapien nisl, finibus quis urna et, faucibus rutrum diam.</p>
+                        <a className="btn">Save Profile</a>
+                        </div>
                     </div>
                 </div>
-            </div>
         );
     }
 
@@ -141,9 +173,11 @@ class ToolsScreen extends React.Component<any, any> {
     };
 
     render(){
+        const { navigation, screenProps } = this.props
         return (
             <div>
-            <h2>Tools</h2>
+                <MainMenu navigation={navigation} logOut={screenProps.logOut}/>
+                <h2>Tools</h2>
             </div>
         );
     }
@@ -161,20 +195,6 @@ class WalletMenu extends React.Component<IWalletMenuProps> {
         // const hasAccount =
         return (
         <div className="wallet">
-          <div className="top">
-            <a className="btn logout-btn" onClick={() => { screenProps.logOut(false); } }>Logout</a>
-          </div>
-          <div className="menu">
-          <div className="menu-item">
-            <a onClick={() => navigation.navigate('WalletScreen')} className={activeKey == 'WalletScreen' ? "active" : ""}><FontAwesomeIcon icon="wallet" /></a>
-          </div>
-          <div className="menu-item">
-            <a onClick={() => navigation.navigate('ProfileScreen')} className={activeKey == 'ProfileScreen' ? "active" : ""}><FontAwesomeIcon icon="user-circle" /></a>
-          </div>
-          <div className="menu-item">
-            <a onClick={() => navigation.navigate('ToolsScreen')} className={activeKey == 'ToolsScreen' ? "active" : ""}><FontAwesomeIcon icon="tools" /></a>
-          </div>
-          </div>
           <div className="content">
               <SceneView
                 component={descriptor.getComponent()}
