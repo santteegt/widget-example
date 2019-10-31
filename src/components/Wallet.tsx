@@ -179,11 +179,11 @@ class ToolsScreen extends React.Component<any, any> {
             <div>
                 <MainMenu navigation={navigation} logOut={screenProps.logOut}/>
                 <div className="row">
+                    <Tool name={"Token Bridge"} onClick={() => { console.log('pin'); }} />
                     <Tool name={"Faucet"} onClick={() => { console.log('pin'); }} />
                     <Tool name={"Uniswap"} onClick={() => { console.log('pin'); }} />
                     <Tool name={"Airswap Instant"} onClick={() => { console.log('pin'); }} />
-                    <Tool name={"Publish Dataset"} onClick={() => { console.log('pin'); }} />
-                    <Tool name={"Bridge"} onClick={() => { console.log('pin'); }} />
+                    <Tool name={"My Data Assets"} onClick={() => { console.log('pin'); }} />
                     <Tool name={"Settings"} onClick={() => { console.log('pin'); }} />
                 </div>
             </div>

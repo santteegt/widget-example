@@ -1,40 +1,52 @@
 import * as React from "react";
 import styled from "styled-components";
 import { SSIcon, SSDescription, SSubtitle } from "./common";
-// @ts-ignore
-import ToolLogo from "../assets/web3-default.svg";
 import { IToolInfo } from "../helpers/types";
+// @ts-ignore
+// import ToolLogo from "../assets/web3-default.svg";
+// @ts-ignore
+import FaucetLogo from "../assets/faucet.svg";
+// @ts-ignore
+import BridgeLogo from "../assets/bridge.svg";
+// @ts-ignore
+import UniswapLogo from "../assets/uniswap.svg";
+// @ts-ignore
+import AirswapLogo from "../assets/airswap.png";
+// @ts-ignore
+import AssetLogo from "../assets/dataAssets.svg";
+// @ts-ignore
+import SettingsLogo from "../assets/settings.svg";
 
 const tools: IToolInfo[] = [
     {
         name: "Faucet",
         description: "Get Network Tokens",
-        logo: ToolLogo
+        logo: FaucetLogo
     },
     {
-        name: "Bridge",
-        description: "Move your OCEAN tokens back and forth Ethereum and POA",
-        logo: ToolLogo
+        name: "Token Bridge",
+        description: "Move OCEAN Ethereum <==> POA",
+        logo: BridgeLogo
     },
     {
         name: "Uniswap",
         description: "Decentralized tokens exchange",
-        logo: ToolLogo
+        logo: UniswapLogo
     },
     {
         name: "Airswap Instant",
-        description: "Intuitive token trading with instant access to liquidity",
-        logo: ToolLogo
+        description: "Instant token trading",
+        logo: AirswapLogo
     },
     {
-        name: "Publish Dataset",
-        description: "Make your data available in the marketplace",
-        logo: ToolLogo
+        name: "My Data Assets",
+        description: "Your datasets in the marketplace",
+        logo: AssetLogo
     },
     {
         name: "Settings",
         description: "Widget Settings",
-        logo: ToolLogo
+        logo: SettingsLogo
     },
 ]
 

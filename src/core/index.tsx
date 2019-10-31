@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 // import Web3 from "web3";
-// import Web3Connect from "web3connect";
-// import WalletConnectProvider from "@walletconnect/web3-provider";
-// import Portis from "@portis/web3";
+import Web3Connect from "web3connect";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import Portis from "@portis/web3";
 // import Squarelink from "squarelink";
 // import Fortmatic from "fortmatic";
 // import Torus from "@toruslabs/torus-embed";
@@ -38,7 +38,7 @@ class Core {
   private lightboxOpacity: number = 0.4;
   // private providerOptions: IProviderOptions = {};
   // private providers: IProviderCallback[];
-  // private web3Connect: any = null;
+  private web3Connect: any = null;
 
   constructor(opts?: ICoreOptions) {
     // this.injectedProvider = getInjectedProviderName();
@@ -53,71 +53,71 @@ class Core {
 
     this.renderModal();
 
-    // this.web3Connect = new Web3Connect.Core({
-    //   network: "mainnet", // optional
-    //   providerOptions: {
-    //     walletconnect: {
-    //       package: WalletConnectProvider, // required
-    //       options: {
-    //         infuraId: "efe2d9ee8dd74c9b87b6c9e65bc785d7" // required
-    //       }
-    //     },
-    //     portis: {
-    //       package: Portis, // required
-    //       options: {
-    //         id: "4a9e93e9-e416-489e-8bee-3c3229f7da2e" // required
-    //       }
-    //     },
-    // //     // fortmatic: {
-    // //     //   package: Fortmatic, // required
-    // //     //   options: {
-    // //     //     key: "FORTMATIC_KEY" // required
-    // //     //   }
-    // //     // },
-    // //     squarelink: {
-    // //       package: Squarelink, // required
-    // //       options: {
-    // //         id: "SQUARELINK_ID" // required
-    // //       }
-    // //     },
-    //     // torus: {
-    //     //   package: Torus, // required
+    this.web3Connect = new Web3Connect.Core({
+      network: "mainnet", // optional
+      providerOptions: {
+        walletconnect: {
+          package: WalletConnectProvider, // required
+          options: {
+            infuraId: "efe2d9ee8dd74c9b87b6c9e65bc785d7" // required
+          }
+        },
+        portis: {
+          package: Portis, // required
+          options: {
+            id: "4a9e93e9-e416-489e-8bee-3c3229f7da2e" // required
+          }
+        },
+    //     // fortmatic: {
+    //     //   package: Fortmatic, // required
     //     //   options: {
-    //     //     enableLogging: false, // optional
-    //     //     buttonPosition: "bottom-left", // optional
-    //     //     buildEnv: "production", // optional
-    //     //     showTorusButton: true // optional
+    //     //     key: "FORTMATIC_KEY" // required
     //     //   }
     //     // },
-    //     // arkane: {
-    //     //   package: Arkane, // required
-    //     //   options: {
-    //     //     clientId: "ARKANE_CLIENT_ID" // required, replace
-    //     //   }
-    //     // },
-    //     // authereum: {
-    //     //   package: Authereum, // required
-    //     //   options: {}
-    //     // }
-    //   }
-    // });
+    //     squarelink: {
+    //       package: Squarelink, // required
+    //       options: {
+    //         id: "SQUARELINK_ID" // required
+    //       }
+    //     },
+        // torus: {
+        //   package: Torus, // required
+        //   options: {
+        //     enableLogging: false, // optional
+        //     buttonPosition: "bottom-left", // optional
+        //     buildEnv: "production", // optional
+        //     showTorusButton: true // optional
+        //   }
+        // },
+        // arkane: {
+        //   package: Arkane, // required
+        //   options: {
+        //     clientId: "ARKANE_CLIENT_ID" // required, replace
+        //   }
+        // },
+        // authereum: {
+        //   package: Authereum, // required
+        //   options: {}
+        // }
+      }
+    });
 
-    // // // subscribe to connect
-    // this.web3Connect.on("connect", (provider: any) => {
-    //   console.log('CONNECT TO WALLET', provider)
-    //   // const web3 = new Web3(provider); // add provider to web3
-    // });
+    // // subscribe to connect
+    this.web3Connect.on("connect", (provider: any) => {
+      console.log('CONNECT TO WALLET', provider)
+      // const web3 = new Web3(provider); // add provider to web3
+    });
 
-    // // // subscribe to close
-    // this.web3Connect.on("close", () => {
-    //   console.log("Web3Connect Modal Closed"); // modal has closed
-    //   this.toggleModal()
-    // });
+    // // subscribe to close
+    this.web3Connect.on("close", () => {
+      console.log("Web3Connect Modal Closed"); // modal has closed
+      this.toggleModal()
+    });
 
-    // // // subscribe to error
-    // this.web3Connect.on("close", (error: any) => {
-    //   console.log("Web3Connect ERROR", error); // modal has closed
-    // });
+    // // subscribe to error
+    this.web3Connect.on("close", (error: any) => {
+      console.log("Web3Connect ERROR", error); // modal has closed
+    });
 
     // this.providers = this.getProviders();
 
@@ -323,7 +323,7 @@ class Core {
   private connectWallet = async () => {
     console.log('==connectWallet==')
     // this.toggleModal()
-    // this.web3Connect.toggleModal()
+    this.web3Connect.toggleModal()
     this.onConnect({'a': 'provider'})
   }
 
@@ -354,7 +354,7 @@ class Core {
     Object.keys(state).forEach(key => {
       this[key] = state[key];
     });
-    await window.updateWeb3ConnectModal(state);
+    await window.updateOceanWalletModal(state);
   };
 
   private resetState = () => this.updateState({ ...INITIAL_STATE });
