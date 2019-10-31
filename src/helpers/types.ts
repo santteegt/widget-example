@@ -15,6 +15,12 @@ export interface IProviderOptions {
   };
 }
 
+export interface IToolInfo {
+  name: string;
+  description: string;
+  logo: string;
+}
+
 export type SimpleFunction = (input?: any) => void;
 
 export interface IEventCallback {

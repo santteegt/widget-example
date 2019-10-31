@@ -27,11 +27,34 @@ export const SIcon = styled.div<IIconStyleProps>`
   }
 `;
 
+export const SSIcon = styled.div<IIconStyleProps>`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-block;
+  & img {
+    width: 100%;
+    height: 100%;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 8.5vw;
+    height: 8.5vw;
+  }
+`;
+
 export const STitle = styled.div`
   width: 100%;
   font-size: 24px;
   font-weight: 700;
   margin-top: 0.5em;
+`;
+
+export const SSubtitle = styled.div`
+  width: 100%;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 0.2em;
 `;
 
 export const SDescription = styled.div`
@@ -41,5 +64,15 @@ export const SDescription = styled.div`
   color: rgb(169, 169, 188);
   @media screen and (max-width: 768px) {
     font-size: 4vw;
+  }
+`;
+
+export const SSDescription = styled.div`
+  width: 100%;
+  font-size: 10px;
+  margin: 0.1em 0;
+  color: rgb(169, 169, 188);
+  @media screen and (max-width: 768px) {
+    font-size: 2vw;
   }
 `;

@@ -10,6 +10,7 @@ import { faTools, faUserCircle, faWallet, faCaretRight } from '@fortawesome/free
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import '../assets/style.css'
+import Tool from './Tool';
 // @ts-ignore
 import NoProfile from "../assets/noProfile.png";
 
@@ -177,7 +178,14 @@ class ToolsScreen extends React.Component<any, any> {
         return (
             <div>
                 <MainMenu navigation={navigation} logOut={screenProps.logOut}/>
-                <h2>Tools</h2>
+                <div className="row">
+                    <Tool name={"Faucet"} onClick={() => { console.log('pin'); }} />
+                    <Tool name={"Uniswap"} onClick={() => { console.log('pin'); }} />
+                    <Tool name={"Airswap Instant"} onClick={() => { console.log('pin'); }} />
+                    <Tool name={"Publish Dataset"} onClick={() => { console.log('pin'); }} />
+                    <Tool name={"Bridge"} onClick={() => { console.log('pin'); }} />
+                    <Tool name={"Settings"} onClick={() => { console.log('pin'); }} />
+                </div>
             </div>
         );
     }

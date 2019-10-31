@@ -254,3 +254,8 @@ span.logo {
     color: #2a2d47;
     width: 300px;
 }
+
+.wallet img,
+.profile img {
+    width: 100%;
+}
