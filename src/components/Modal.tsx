@@ -78,6 +78,7 @@ const SHeader = styled.div`
   border-top-right-radius: 12px;
   border-top-left-radius: 12px;
   font-size: 12px;
+  color: #fff;
 `;
 
 const SHitbox = styled.div`
@@ -90,9 +91,10 @@ const SHitbox = styled.div`
 
 const SClose = styled.a`
   position: absolute;
-  top: 10px;
+  top: 0px;
   right: 10px;
   color: #fff;
+  margin: 8px auto;
 
   &:hover {
       color: #fff;
@@ -107,7 +109,7 @@ interface IModalCardStyleProps {
 const SModalCard = styled.div<IModalCardStyleProps>`
   position: absolute;
   width: 100%;
-  background-color: #8b98a9;
+  background-color: #2d2b83;
   border-radius: 12px;
   margin: 10px;
   padding: 0;
@@ -244,7 +246,7 @@ class Modal extends React.Component<IModalProps, IModalState> {
             {!this.state.loggedIn ? (
               <Providers onLogIn={this.logIn} connectBurner={connectBurner} connectWallet={connectWallet}/>
               ) : (
-              <Wallet onLogOut={this.logIn}/> 
+              <Wallet onLogOut={this.logIn}/>
             )}
 
 

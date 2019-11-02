@@ -48,6 +48,7 @@ export const STitle = styled.div`
   font-size: 24px;
   font-weight: 700;
   margin-top: 0.5em;
+  color: #fff;
 `;
 
 export const SSubtitle = styled.div`
@@ -61,7 +62,7 @@ export const SDescription = styled.div`
   width: 100%;
   font-size: 14px;
   margin: 0.333em 0;
-  color: rgb(169, 169, 188);
+  color: #eee;
   @media screen and (max-width: 768px) {
     font-size: 4vw;
   }
@@ -71,7 +72,8 @@ export const SSDescription = styled.div`
   width: 100%;
   font-size: 10px;
   margin: 0.1em 0;
-  color: rgb(169, 169, 188);
+  color: #eee;
+  min-height: 30px;
   @media screen and (max-width: 768px) {
     font-size: 2vw;
   }

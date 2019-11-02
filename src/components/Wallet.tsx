@@ -13,6 +13,8 @@ import '../assets/style.css'
 import Tool from './Tool';
 // @ts-ignore
 import NoProfile from "../assets/noProfile.png";
+// @ts-ignore
+import Copy from "../assets/copy.png";
 
 
 library.add(faTools, faUserCircle, faWallet, faCaretRight)
@@ -36,10 +38,7 @@ class MainMenu extends React.Component<any, any> {
 
     render() {
         const { navigation, logOut } = this.props
-        let activeKey = 'WalletScreen'
-        if(navigation.state.index){
-            activeKey = navigation.state.routes[navigation.state.index].key;
-        }
+        let activeKey = navigation.state.key;
         return(
             <div>
                 <div className="top">
@@ -96,7 +95,10 @@ class WalletScreen extends React.Component<any, any> {
                 <div className="value">
                     <CopyToClipboard text="0x255A8eB9aa6811Eb1330B21ddeedE8AB8EeAE62A"
                       onCopy={ () => { screenProps.copied = true; }  }>
-                        <span>0x255A8eB9aa6811Eb1330B21ddeedE8AB8EeAE62A</span>
+                        <div>
+                            <span>0x255A8eB9aa6811Eb1330B21ddeedE8AB8EeAE62A</span>
+                            <img src={Copy} />
+                        </div>
                     </CopyToClipboard>
                 </div>
                 <div className="action"></div>
@@ -176,7 +178,7 @@ class ToolsScreen extends React.Component<any, any> {
     render(){
         const { navigation, screenProps } = this.props
         return (
-            <div>
+            <div className="tools">
                 <MainMenu navigation={navigation} logOut={screenProps.logOut}/>
                 <div className="row">
                     <Tool name={"Token Bridge"} onClick={() => { console.log('pin'); }} />
