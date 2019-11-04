@@ -10,7 +10,7 @@ export interface IOPSettings {
   brizoUri: string;
   brizoAddress: string;
   secretStoreUri: string;
-  verbose: boolean
+  verbose: boolean;
 }
 
 export interface OceanOptions {
