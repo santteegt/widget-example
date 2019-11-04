@@ -34,5 +34,8 @@ module.exports = {
       },
       { test: /\.css$/, loaders: ['style-loader', 'css-loader'] }
     ]
+  },
+  node: {
+    fs: 'empty'
   }
 };

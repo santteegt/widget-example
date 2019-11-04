@@ -29,6 +29,8 @@ import { IAssetData } from './helpers/types'
 import { fonts } from './styles'
 import asset from './assets/asset'
 
+import { opOptions } from './config'
+
 const SLayout = styled.div`
   position: relative;
   width: 100%;
@@ -132,6 +134,7 @@ interface IAppState {
   pendingRequest: boolean
   result: any | null
   ocean: any
+  ocnBalance: number
   results: any[]
 }
 
@@ -140,13 +143,14 @@ const INITIAL_STATE: IAppState = {
   address: '',
   web3: null,
   connected: false,
-  chainId: 1,
+  chainId: -1,
   networkId: 1,
   assets: [],
   showModal: false,
   pendingRequest: false,
   result: null,
   ocean: null,
+  ocnBalance: 0,
   results: []
 }
 
@@ -176,6 +180,8 @@ class App extends React.Component<any, any> {
 
     const chainId = await web3.eth.chainId()
 
+    console.log('CHAINID', chainId)
+
     await this.setState({
       web3,
       connected: true,
@@ -184,6 +190,10 @@ class App extends React.Component<any, any> {
       networkId
     })
     // await this.getAccountAssets()
+  }
+
+  public pluginOCean = async (ocean: any) => {
+    await this.setState({ ocean })
   }
 
   // public getAccountAssets = async () => {
@@ -357,30 +367,12 @@ class App extends React.Component<any, any> {
     this.setState({ ...INITIAL_STATE })
   }
 
-  public componentDidMount = async () => {
-    // const ocean = await new Ocean.getInstance({
-    //   web3Provider: web3,
-    //   nodeUri: 'https://nile.dev-ocean.com',
-    //   aquariusUri: 'https://aquarius.marketplace.dev-ocean.com',
-    //   brizoUri: 'https://brizo.marketplace.dev-ocean.com',
-    //   brizoAddress: '0x4aaab179035dc57b35e2ce066919048686f82972',
-    //   secretStoreUri: 'https://secret-store.nile.dev-ocean.com',
-    //   // local Spree connection
-    //   // nodeUri: 'http://localhost:8545',
-    //   // aquariusUri: 'http://aquarius:5000',
-    //   // brizoUri: 'http://localhost:8030',
-    //   // brizoAddress: '0x00bd138abd70e2f00903268f3db08f2d25677c9e',
-    //   // secretStoreUri: 'http://localhost:12001',
-    //   verbose: true
-    // })
-    // this.setState({ ocean })
-    // console.log('Finished loading contracts.')
-  }
-
   public registerAsset = async () => {
     try {
       const accounts = await this.state.ocean.accounts.list()
-      const ddo = await this.state.ocean.assets.create(asset, accounts[0])
+      const ddo = await this.state.ocean.assets
+        .create(asset, accounts[0])
+        .next((publishingStep: number) => console.log('Hit next', publishingStep))
       console.log('Asset successfully submitted.')
       console.log(ddo)
       alert(
@@ -404,12 +396,34 @@ class App extends React.Component<any, any> {
     }
   }
 
-  public consumeAsset = async() => {
+  public requestTokens = async () => {
+    try {
+      const accounts = await this.state.ocean.accounts.list()
+      const { ocnBalance } = this.state
+      if (ocnBalance === 0) {
+        await this.state.ocean.accounts.requestTokens(accounts[0], 10)
+        this.getBalance()
+      }
+    } catch (error) {
+      console.error(error.message)
+    }
+  }
+
+  public getBalance = async () => {
+    const accounts = await this.state.ocean.accounts.list()
+    const account = accounts[0]
+    const balance = await account.getBalance()
+    const { ocn } = balance
+    this.setState({ ocnBalance: ocn })
+  }
+
+  public consumeAsset = async () => {
     try {
       // get all accounts
       const accounts = await this.state.ocean.accounts.list()
       // get first asset from search results
       const consumeAsset = this.state.results[0]
+      console.log('consumeAsset', consumeAsset)
       // get service we want to execute
       const service = consumeAsset.findServiceByType('Access')
       // order service agreement
@@ -417,7 +431,7 @@ class App extends React.Component<any, any> {
         consumeAsset.id,
         service.serviceDefinitionId,
         accounts[0]
-      )
+      ).next((publishingStep: number) => console.log('Hit next', publishingStep))
       // consume it
       await this.state.ocean.assets.consume(
         agreement,
@@ -442,7 +456,10 @@ class App extends React.Component<any, any> {
       // showModal,
       // pendingRequest,
       // result,
-      web3
+      web3,
+      ocean,
+      ocnBalance,
+      results
     } = this.state
 
     return (
@@ -467,38 +484,28 @@ class App extends React.Component<any, any> {
               {!web3 ? (
                 <SLanding center>
                   <OPWallet.Button
-                    network="mainnet"
-                    providerOptions={{
-                      // walletconnect: {
-                      //   package: WalletConnectProvider,
-                      //   options: {
-                      //     infuraId: process.env.REACT_APP_INFURA_ID
-                      //   }
-                      // },
-                      // portis: {
-                      //   package: Portis,
-                      //   options: {
-                      //     id: process.env.REACT_APP_PORTIS_ID
-                      //   }
-                      // },
-                      // fortmatic: {
-                      //   package: Fortmatic,
-                      //   options: {
-                      //     key: process.env.REACT_APP_FORTMATIC_KEY
-                      //   }
-                      // }
-                      // squarelink: {
-                      //   package: Squarelink,
-                      //   options: {
-                      //     id: process.env.REACT_APP_SQUARELINK_ID
-                      //   }
-                      // },
-                      // torus: {
-                      //   package: Torus
-                      // }
+                    label={!ocean ? "Connect": "Connecting..."}
+                    walletOptions={{
+                      portisEnabled: process.env.REACT_APP_PORTIS_APP_ID || false,
+                      portisAppId: process.env.REACT_APP_PORTIS_APP_ID,
+                      torusEnabled: true
                     }}
-                    onConnect={(provider: any) => {
+                    oceanOptions={{
+                      enabled: false,
+                      settings: opOptions
+                    }}
+                    onWeb3Connected={(provider: any) => {
                       this.onConnect(provider)
+                    }}
+                    onOceanConnected={(ocean: any) => {
+                      this.pluginOCean(ocean)
+                      this.getBalance()
+
+                    }}
+                    onDisconnect={() => {
+                      this.setState({
+                        ocean: null, web3: null 
+                      }, () => console.log('Disconnected from wallet'))
                     }}
                     onClose={() => {
                       // empty
@@ -509,19 +516,32 @@ class App extends React.Component<any, any> {
                   />
                 </SLanding>
               ):(
-                <STestButtonContainer>
-                  <STestButton left onClick={this.registerAsset}>
-                    {'Register Asset'}
-                  </STestButton>
+                <>
+                  <Column center>
+                    <div style={{'marginTop': '50px'}}>
+                      <span>
+                        Ocean Tokens: {ocnBalance}
+                      </span>
+                    </div>
+                  </Column>
+                  <STestButtonContainer>
+                    <STestButton left onClick={this.registerAsset} disabled={!ocean}>
+                      {'Register Asset'}
+                    </STestButton>
 
-                  <STestButton left onClick={this.searchAssets}>
-                    {'Search assets'}
-                  </STestButton>
+                    <STestButton left onClick={this.searchAssets} disabled={!ocean}>
+                      {'Search assets'}
+                    </STestButton>
 
-                  <STestButton left onClick={this.consumeAsset}>
-                    {'Consume asset'}
-                  </STestButton>
-                </STestButtonContainer>
+                    <STestButton left onClick={this.requestTokens} disabled={!ocean || ocnBalance > 0}>
+                      {'Ocean Faucet'}
+                    </STestButton>
+
+                    <STestButton left onClick={this.consumeAsset} disabled={!ocean || results.length === 0}>
+                      {'Consume asset'}
+                    </STestButton>
+                  </STestButtonContainer>
+                </>
               )}
           </SContent>
         </Column>

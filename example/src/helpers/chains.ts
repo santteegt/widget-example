@@ -81,7 +81,34 @@ const supportedChains: IChainData[] = [
     chain_id: 100,
     network_id: 1,
     rpc_url: 'https://dai.poa.network'
-  }
+  },
+  {
+    name: 'Pacific (ocean)',
+    short_name: 'eth',
+    chain: 'PETH',
+    network: 'pacific',
+    chain_id: 846353,
+    network_id: 846353,
+    rpc_url: 'https://pacific.oceanprotocol.com'
+  },
+  {
+    name: 'Spree Testnet',
+    short_name: 'spree',
+    chain: 'SETH',
+    network: 'spree',
+    chain_id: 8996,
+    network_id: 8996,
+    rpc_url: 'http://0.0.0.0:8545'
+  },
+  {
+    name: 'Unknown',
+    short_name: 'unkown',
+    chain: 'ETH',
+    network: 'unkown',
+    chain_id: -1,
+    network_id: -1,
+    rpc_url: 'http://0.0.0.0:8545'
+  },
 ]
 
 export default supportedChains

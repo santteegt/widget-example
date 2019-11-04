@@ -10,9 +10,11 @@ class ConnectButton extends React.Component<any, any> {
     this.core = new Core({
       network: props.network,
       lightboxOpacity: props.lightboxOpacity,
-      // providerOptions: props.providerOptions
+      walletOptions: props.walletOptions,
+      oceanOptions: props.oceanOptions
     });
-    this.core.on("connect", props.onConnect);
+    this.core.on("web3connected", props.onWeb3Connected);
+    this.core.on("oceanconnected", props.onOceanConnected);
     this.core.on("disconnect", props.onDisconnect);
     this.core.on("close", props.onClose);
     this.core.on("error", props.onError);
@@ -20,7 +22,7 @@ class ConnectButton extends React.Component<any, any> {
 
   public render = () => {
     return (
-      <Button onClick={this.core.toggleModal}>
+      <Button onClick={this.core.toggleModal} disabled={this.props.label == 'Connecting...'}>
         {this.props.label || "Connect"}
       </Button>
     );

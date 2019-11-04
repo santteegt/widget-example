@@ -106,12 +106,13 @@ export function isMobile(): boolean {
 }
 
 export function getChainData(chainId: number): IChainData {
-  const chainData = supportedChains.filter(
+  let chainData = supportedChains.filter(
     (chain: any) => chain.chain_id === chainId
   )[0]
 
   if (!chainData) {
-    throw new Error('ChainId missing or not supported')
+    // throw new Error('ChainId missing or not supported')
+    chainData = supportedChains.filter((chain: any) => chain.chain_id === -1)[0]    
   }
 
   const API_KEY = process.env.REACT_APP_INFURA_PROJECT_ID

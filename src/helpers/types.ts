@@ -1,3 +1,23 @@
+export interface IWalletOptions {
+  portisEnabled?: boolean;
+  portisAppId?: string;
+  torusEnabled?: boolean;
+}
+
+export interface IOPSettings {
+  nodeUri: string;
+  aquariusUri: string;
+  brizoUri: string;
+  brizoAddress: string;
+  secretStoreUri: string;
+  verbose: boolean
+}
+
+export interface OceanOptions {
+  enabled: boolean;
+  settings: IOPSettings;
+}
+
 export interface IProviderInfo {
   name: string;
   type: string;
