@@ -6,6 +6,9 @@ import Web3Connect from "web3connect";
 import Portis from "@portis/web3";
 import Torus from "@toruslabs/torus-embed";
 import { provideOcean } from "./ocean";
+import BurnerWalletProvider  from './providers/BurnerWalletProvider';
+import supportedChains from '../helpers/chains';
+import { Widget } from './context';
 import Modal from "../components/Modal";
 // import { IProviderOptions  IProviderCallback } 
 import { IWalletOptions, OceanOptions }from "../helpers/types";
@@ -20,8 +23,8 @@ import EventManager from "./events";
 const WEB3_WALLET_MODAL_ID = "OCEAN_WALLET_MODAL_ID";
 
 interface ICoreOptions {
-  modal?: boolean;
   network?: string;
+  modal?: boolean;
   lightboxOpacity?: number;
   // providerOptions?: IProviderOptions;
   walletOptions?: IWalletOptions
@@ -35,11 +38,13 @@ export default class Core {
   private show: boolean = INITIAL_STATE.show;
   private eventManager: EventManager = new EventManager();
   // private injectedProvider: string | null = null;
-  // private network: string = "";
+  private network: string | undefined = undefined;
   private lightboxOpacity: number = 0.4;
   // private providerOptions: IProviderOptions = {};
   // private providers: IProviderCallback[];
   private web3Connect: any = null;
+
+  private burnerWalletConnect: BurnerWalletProvider | undefined;
 
   private web3?: Web3;
 
@@ -53,7 +58,7 @@ export default class Core {
     const providerOptions = {};
     console.log('opts', opts)
     // if (opts) {
-      // this.network = opts.network || "";
+    this.network = opts.network;
     this.lightboxOpacity = opts.lightboxOpacity || 0.4;
     // this.providerOptions = opts.providerOptions || {};
     this.oceanOptions = opts.oceanOptions;
@@ -84,6 +89,14 @@ export default class Core {
       }
     }
 
+    if (!this.network) {
+      // Default network for burner wallet
+      this.network = 'local';
+    }
+    // get burner wallet provider
+    this.burnerWalletConnect = new BurnerWalletProvider(WEB3_WALLET_MODAL_ID);
+    // }
+
     // Injecting widget in the DOM
     this.renderModal();
 
@@ -93,15 +106,7 @@ export default class Core {
     // // subscribe to connect
     this.web3Connect.on("connect", (provider: any) => {
       console.log('CONNECT TO WALLET', provider)
-      this.web3 = new Web3(provider);
-      this.eventManager.trigger("web3connected", this.web3);
-      if (this.oceanOptions && this.oceanOptions.enabled) {
-        console.log('OP OPtions', this.oceanOptions.settings)
-        provideOcean(this.web3, this.oceanOptions.settings).then((instance: Ocean) => {
-          this.ocean = instance;
-          this.eventManager.trigger("oceanconnected", this.ocean);
-        }).catch((error) => this.eventManager.trigger("error", error));
-      }
+      this.onConnect(new Web3(provider));
     });
 
     // // subscribe to close
@@ -114,7 +119,7 @@ export default class Core {
     // // subscribe to error
     this.web3Connect.on("close", (error: any) => {
       console.log("Web3Connect ERROR", error); // modal has closed
-      this.eventManager.trigger("error", error);
+      this.onError(error);
     });
 
     // this.providers = this.getProviders();
@@ -144,13 +149,29 @@ export default class Core {
 
   private connectBurner = async () => {
     console.log('==connectBurner')
-    this.onError(new Error("test error"))
+    if(this.burnerWalletConnect) {
+      let httpProviderURI;
+      if (this.oceanOptions && this.oceanOptions.enabled) {
+        httpProviderURI = this.oceanOptions.settings.nodeUri;
+      } else {
+        let chain = supportedChains.find((chain) => chain.network == this.network);
+        httpProviderURI = chain ? chain.rpc_url : 'http://0.0.0.0:8545';
+      }
+      console.log('==connectBurner provider', httpProviderURI)
+      try {
+        const web3 = await this.burnerWalletConnect.login(httpProviderURI);
+        this.onConnect(web3);
+      } catch (error) {
+        this.onError(error);
+      }
+      
+    }
+    // this.onError(new Error("test error"))
   }
 
   private connectWallet = async () => {
     console.log('==connectWallet==')
     this.web3Connect.toggleModal()
-    // this.onConnect({'a': 'provider'})
   }
 
   private onError = async (error: any) => {
@@ -158,16 +179,21 @@ export default class Core {
   //   if (this.show) {
   //     await this.toggleModal();
   //   }
-  //   this.eventManager.trigger("error", error);
+    this.eventManager.trigger("error", error);
   };
 
-  // private onConnect = async (provider: any) => {
-  //   console.log('onConnect', provider)
-  // //   if (this.show) {
-  // //     await this.toggleModal();
-  // //   }
-  //   this.eventManager.trigger("connect", provider);
-  // };
+  private onConnect = async (web3: Web3) => {
+    console.log('onConnect')
+    this.web3 = web3;
+    this.eventManager.trigger("web3connected", this.web3);
+    if (this.oceanOptions && this.oceanOptions.enabled) {
+      console.log('OP OPtions', this.oceanOptions.settings)
+      provideOcean(this.web3, this.oceanOptions.settings).then((instance: Ocean) => {
+        this.ocean = instance;
+        this.eventManager.trigger("oceanconnected", this.ocean);
+      }).catch((error) => this.onError(error));
+    }
+  };
 
   private onClose = async () => {
     if (this.show) {
@@ -185,6 +211,34 @@ export default class Core {
 
   private resetState = () => this.updateState({ ...INITIAL_STATE });
 
+  private getContextData = () => {
+    return {
+      isLoggedIn: false,
+      isLoading: false,
+      account: '',
+      web3: {},
+      ocean: {},
+      box: {},
+      balance: {
+          eth: 0,
+          ocn: 0
+      },
+      network: '',
+      openWalletProvider: () => {
+          /* empty */
+      },
+      requestFromFaucet: () => {
+          /* empty */
+      },
+      airdropOceanTokens: () => {
+          /* empty */
+      },
+      loginWallet: () => this.connectWallet(),
+      loginBurnerWallet: () => this.connectBurner(),
+      message: ''
+    }
+  }
+
   public renderModal() {
     const el = document.createElement("div");
     el.id = WEB3_WALLET_MODAL_ID;
@@ -200,13 +254,15 @@ export default class Core {
     //   document.getElementById(WEB3_WALLET_MODAL_ID)
     // );
     ReactDOM.render(
-      <Modal
+      <Widget.Provider value={this.getContextData()}>
+        <Modal
         connectBurner={this.connectBurner}
         connectWallet={this.connectWallet}
         onClose={this.onClose}
         resetState={this.resetState}
         lightboxOpacity={this.lightboxOpacity}
-      />,
+        />
+      </Widget.Provider>,
       document.getElementById(WEB3_WALLET_MODAL_ID)
     );
   }

@@ -29,7 +29,7 @@ import { IAssetData } from './helpers/types'
 import { fonts } from './styles'
 import asset from './assets/asset'
 
-import { opOptions } from './config'
+import { opOptions, faucetURI } from './config'
 
 const SLayout = styled.div`
   position: relative;
@@ -134,6 +134,7 @@ interface IAppState {
   pendingRequest: boolean
   result: any | null
   ocean: any
+  ethBalance: number
   ocnBalance: number
   results: any[]
 }
@@ -150,6 +151,7 @@ const INITIAL_STATE: IAppState = {
   pendingRequest: false,
   result: null,
   ocean: null,
+  ethBalance: 0,
   ocnBalance: 0,
   results: []
 }
@@ -396,14 +398,39 @@ class App extends React.Component<any, any> {
     }
   }
 
+  public requestFromFaucet = async (account: string) => {
+    if (faucetURI && faucetURI.length > 0) {
+      try {
+          const url = `${faucetURI}/faucet`
+          const response = await fetch(url, {
+              method: 'POST',
+              headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                  address: account,
+                  agent: 'web'
+              })
+          })
+          return response.json()
+      } catch (error) {
+          console.error('requestFromFaucet', error.message)
+      }
+    }
+  }
+
   public requestTokens = async () => {
     try {
       const accounts = await this.state.ocean.accounts.list()
-      const { ocnBalance } = this.state
+      const { ethBalance, ocnBalance } = this.state
+      if (ethBalance === 0) {
+        await this.requestFromFaucet(accounts[0].id)
+      }
       if (ocnBalance === 0) {
         await this.state.ocean.accounts.requestTokens(accounts[0], 10)
-        this.getBalance()
       }
+      this.getBalance()
     } catch (error) {
       console.error(error.message)
     }
@@ -413,8 +440,8 @@ class App extends React.Component<any, any> {
     const accounts = await this.state.ocean.accounts.list()
     const account = accounts[0]
     const balance = await account.getBalance()
-    const { ocn } = balance
-    this.setState({ ocnBalance: ocn })
+    const { eth, ocn } = balance
+    this.setState({ ethBalance: eth, ocnBalance: ocn })
   }
 
   public consumeAsset = async () => {
@@ -458,6 +485,7 @@ class App extends React.Component<any, any> {
       // result,
       web3,
       ocean,
+      ethBalance,
       ocnBalance,
       results
     } = this.state
@@ -519,6 +547,13 @@ class App extends React.Component<any, any> {
                 <>
                   <Column center>
                     <div style={{'marginTop': '50px'}}>
+                      <span>
+                        ETH Balance: {ethBalance}
+                      </span>
+                    </div>
+                  </Column>
+                  <Column center>
+                    <div>
                       <span>
                         Ocean Tokens: {ocnBalance}
                       </span>

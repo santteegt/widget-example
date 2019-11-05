@@ -3,6 +3,7 @@ import * as PropTypes from "prop-types";
 import styled from "styled-components";
 import Providers from "./Providers";
 import Wallet from "./Wallet";
+import { Widget } from '../core/context';
 import {
   SimpleFunction,
   // IProviderCallback
@@ -150,7 +151,8 @@ const INITIAL_STATE: IModalState = {
 };
 
 
-class Modal extends React.Component<IModalProps, IModalState> {
+export default class Modal extends React.Component<IModalProps, IModalState> {
+
   constructor(props: IModalProps) {
     super(props);
     this.logIn.bind(this);
@@ -171,6 +173,10 @@ class Modal extends React.Component<IModalProps, IModalState> {
   public state: IModalState = {
     ...INITIAL_STATE
   };
+
+  public componentDidMount() {
+    console.log('CONTEXT on Modal', this.context)
+  }
 
   public componentDidUpdate(prevProps: IModalProps, prevState: IModalState) {
     if (prevState.show && !this.state.show) {
@@ -259,4 +265,4 @@ class Modal extends React.Component<IModalProps, IModalState> {
 
 }
 
-export default Modal;
+Modal.contextType = Widget;

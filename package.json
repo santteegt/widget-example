@@ -83,6 +83,7 @@
     "@react-navigation/core": "^3.5.1",
     "@react-navigation/web": "^1.0.0-alpha.9",
     "@toruslabs/torus-embed": "^0.2.3",
+    "@truffle/hdwallet-provider": "^1.0.23",
     "css-loader": "^3.2.0",
     "prop-types": "^15.7.2",
     "react": "^16.11.0",

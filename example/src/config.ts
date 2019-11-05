@@ -6,3 +6,5 @@ export const opOptions = {
   secretStoreUri: process.env.REACT_APP_SECRET_STORE_URI || 'https://secret-store.oceanprotocol.com',
   verbose: true
 }
+
+export const faucetURI = process.env.REACT_APP_FAUCET_URI || 'https://faucet.oceanprotocol.com'

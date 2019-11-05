@@ -104,7 +104,7 @@ const supportedChains: IChainData[] = [
     name: 'Unknown',
     short_name: 'unknown',
     chain: 'ETH',
-    network: 'unknown',
+    network: 'local',
     chain_id: -1,
     network_id: -1,
     rpc_url: 'http://0.0.0.0:8545'
