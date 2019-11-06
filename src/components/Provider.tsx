@@ -13,7 +13,7 @@ const SProviderContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #42acfd;
+  background-color: #1187c8;
   border-radius: 12px;
   padding: 20px 15px;
   @media screen and (max-width: 768px) {
@@ -33,7 +33,7 @@ const SProvider = styled.div`
   /* border: 1px solid rgba(195, 195, 195, 0.14); */
   @media (hover: hover) {
     &:hover ${SProviderContainer} {
-      background-color: #42ecfd;
+      background-color: #23a3ea;
     }
   }
 `;

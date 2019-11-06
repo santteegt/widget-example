@@ -22,7 +22,7 @@ library.add(faTools, faUserCircle, faWallet, faCaretRight)
 interface IWalletMenuProps {
     descriptors: any,
     navigation: any,
-    screenProps: { hasAccount: boolean, logOut: any, createAccount: any, copied: boolean }
+    screenProps: { hasAccount: boolean, logOut: any, createAccount: any, copied: boolean, canEdit: boolean }
 }
 
 interface IWalletProps {
@@ -31,6 +31,7 @@ interface IWalletProps {
 
 interface IWalletState {
   hasAccount: boolean;
+  canEdit: boolean;
 }
 
 class MainMenu extends React.Component<any, any> {
@@ -132,7 +133,7 @@ class ProfileScreen extends React.Component<any, any> {
 
     render() {
         const { navigation, screenProps } = this.props
-        // console.log('screenProps in ProfileScreen', screenProps)
+        //console.log('screenProps in ProfileScreen', screenProps)
         const hasAccount = screenProps.hasAccount;
         return (
             <div className="profile">
@@ -145,11 +146,19 @@ class ProfileScreen extends React.Component<any, any> {
                         <a className="hover-text">
                             <img src={NoProfile} />
                         </a>
-                        <div className="info">
-                        <p>John Doe</p>
-                        <span>Role</span>
-                        <span>Institution</span>
-                        </div>
+                        { !screenProps.canEdit ?
+                            <div className="info">
+                                <p>John Doe</p>
+                                <span>Role</span>
+                                <span>Institution</span>
+                            </div>
+                            :
+                            <div className="info">
+                                <input name="name" placeholder="Your Name"/>
+                                <input name="role" placeholder="Your Role"/>
+                                <input name="institution" placeholder="Your Institution"/>
+                            </div>
+                        }
                         </div>
                         <div className="row counters">
                             <p><span className="number">10</span>Datasets</p>
@@ -158,7 +167,11 @@ class ProfileScreen extends React.Component<any, any> {
                         </div>
                         <div className="row">
                         <p className="desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla aliquam iaculis hendrerit. Vivamus id purus dolor. Duis lacinia ultrices neque, ac laoreet leo maximus ut. Praesent sapien nisl, finibus quis urna et, faucibus rutrum diam.</p>
-                        <a className="btn">Save Profile</a>
+                        { screenProps.canEdit ?
+                            <a className="btn" onClick={() => {screenProps.setEdit(false)}}>Save Profile</a>
+                            :
+                            <a className="btn" onClick={() => {screenProps.setEdit(true)}}>Edit Profile</a>
+                        }
                         </div>
                     </div>
                 </div>
@@ -242,17 +255,22 @@ const AppContainer = createBrowserApp(WalletNavigator);
 
 class Wallet extends React.Component<IWalletProps, IWalletState> {
 
-    state : IWalletState = { hasAccount: false }
+    state : IWalletState = { hasAccount: false, canEdit: false }
 
     createAccount = () => {
         // TODO: manage account creation
         this.setState({hasAccount: true})
     }
 
+    setEdit = (canEdit: boolean) => {
+        this.setState({canEdit});
+        console.log('state', this.state);
+    }
+
     public render = () => {
         const { onLogOut } = this.props;
         return (
-            <AppContainer screenProps={{ hasAccount: this.state.hasAccount, logOut: onLogOut, createAccount: this.createAccount, copied: false }}/>
+            <AppContainer screenProps={{ hasAccount: this.state.hasAccount, logOut: onLogOut, createAccount: this.createAccount, copied: false, canEdit: this.state.canEdit, setEdit: this.setEdit }}/>
         );
     };
 }

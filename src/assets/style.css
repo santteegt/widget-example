@@ -19,7 +19,7 @@
 .menu-item {
     width: calc(33.33% - 3.33px);
     float: left;
-    border: 1px solid #43ebfd;
+    border: 1px solid #1187c8;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
     border-bottom-width: 0px;
@@ -101,9 +101,18 @@
 }
 
 .profile-content-area {
-    border-left: 1px solid #43ebfd;
-    border-right: 1px solid #43ebfd;
+    border-left: 1px solid #1187c8;
+    border-right: 1px solid #1187c8;
 }
+
+.profile-content-area .info {
+    position: relative;
+}
+
+.profile-content-area .info input {
+    width: 100%;
+}
+
 
 .info-content-area .label {
     font-weight: 600;
@@ -113,7 +122,7 @@
 }
 
 .info-content-area, .tools .row, .profile .profile-content-area .row:last-child {
-    border: 1px solid #43ebfd;
+    border: 1px solid #1187c8;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     border-top-width: 0px;
@@ -168,11 +177,11 @@
 .user-info .hover-prof:hover::after {
     content: 'OPEN \A 3BOX';
     position: absolute;
-    bottom: 0px;
-    line-height: 12px;
+    bottom: 4px;
+    line-height: 15px;
     font-weight: 600;
     color: #fff;
-    background-color: #43ebfd;
+    background-color: #1187c8;
     width: 100%;
     left: 0;
     border-bottom-left-radius: 50px;
@@ -249,14 +258,14 @@
 .btn {
     border-radius: 5px;
     padding: 10px;
-    background-color: #43ebfd;
+    background-color: #1187c8;
     color: #fff;
     cursor: pointer;
     display: inline-block;
 }
 
 .btn:hover {
-    background-color: #42acfd;
+    background-color: #1187c8;
     color: #fff;
 }
 

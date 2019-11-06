@@ -65,7 +65,7 @@ export function getToolInfoByName(name: string | null): IToolInfo {
 const SToolContainer = styled.div`
   transition: background-color 0.2s ease-in-out;
   width: 100%;
-  background-color: #42acfd;
+  background-color: #1187c8;
   border-radius: 12px;
   padding: 10px;
   text-align: center;
@@ -83,7 +83,7 @@ const STool = styled.div`
   /* border: 1px solid rgba(195, 195, 195, 0.14); */
   @media (hover: hover) {
     &:hover ${SToolContainer} {
-      background-color: #42ecfd;
+      background-color: #23a3ea;
     }
   }
 `;

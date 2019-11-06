@@ -17,7 +17,7 @@ class Providers extends React.Component<IProvidersProps, any> {
             <div>
                 <Provider name={"NewUser"} onClick={() => {
                     onLogIn(true)
-                    connectBurner() 
+                    connectBurner()
                 }} />
                 <Provider name={"ConnectWallet"} onClick={() => connectWallet()} />
             </div>

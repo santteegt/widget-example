@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Providers from "./Providers";
 import Wallet from "./Wallet";
 import { Widget } from '../core/context';
+import Loading from './Loading';
 import {
   SimpleFunction,
   // IProviderCallback
@@ -142,12 +143,14 @@ interface IModalState {
   show: boolean;
   lightboxOffset: number;
   loggedIn: boolean;
+  loading: boolean;
 }
 
 const INITIAL_STATE: IModalState = {
   show: false,
   lightboxOffset: 0,
-  loggedIn: false
+  loggedIn: false,
+  loading: true
 };
 
 
@@ -195,8 +198,12 @@ export default class Modal extends React.Component<IModalProps, IModalState> {
     }
   }
 
+  setLoading = (loading: boolean) => {
+      this.setState({loading});
+  }
+
   logIn = (loggedIn: boolean) => {
-        this.setState({loggedIn}, () => console.log('Log', this.state.loggedIn));
+      this.setState({loggedIn}, () => console.log('LogIn', this.state.loggedIn));
   }
 
   connectWallet = () => {
@@ -251,8 +258,8 @@ export default class Modal extends React.Component<IModalProps, IModalState> {
             <SClose onClick={onClose} href={"#"}>X</SClose>
             {!this.state.loggedIn ? (
               <Providers onLogIn={this.logIn} connectBurner={connectBurner} connectWallet={connectWallet}/>
-              ) : (
-              <Wallet onLogOut={this.logIn}/>
+          ) : ( this.state.loading ? <Loading setLoading={this.setLoading}/>
+              : <Wallet onLogOut={this.logIn}/>
             )}
 
 
