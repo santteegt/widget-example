@@ -76,7 +76,7 @@ const SToolContainer = styled.div`
 
 const STool = styled.div`
   width: 50%;
-  padding: 8px;
+  padding: 5px;
   font-size: 11px;
   float: left;
   cursor: pointer;

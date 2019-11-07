@@ -73,7 +73,7 @@ export const SSDescription = styled.div`
   font-size: 10px;
   margin: 0.1em 0;
   color: #eee;
-  min-height: 30px;
+  min-height: 35px;
   @media screen and (max-width: 768px) {
     font-size: 2vw;
   }

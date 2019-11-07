@@ -4,7 +4,8 @@ import styled from "styled-components";
 import Providers from "./Providers";
 import Wallet from "./Wallet";
 import { Widget } from '../core/context';
-import Loading from './Loading';
+// import Loading from './Loading';
+import Spinner from './Spinner';
 import {
   SimpleFunction,
   // IProviderCallback
@@ -119,7 +120,7 @@ const SModalCard = styled.div<IModalCardStyleProps>`
   visibility: ${({ show }) => (show ? "visible" : "hidden")};
   pointer-events: ${({ show }) => (show ? "auto" : "none")};
 
-  max-width: ${({ maxWidth }) => (maxWidth ? `${maxWidth}px` : "300px")};
+  max-width: ${({ maxWidth }) => (maxWidth ? `${maxWidth}px` : "320px")};
   min-width: fit-content;
 
   top: 0px;
@@ -144,15 +145,21 @@ interface IModalState {
   lightboxOffset: number;
   loggedIn: boolean;
   loading: boolean;
+  publishingStep: number;
 }
 
 const INITIAL_STATE: IModalState = {
   show: false,
   lightboxOffset: 0,
   loggedIn: false,
-  loading: true
+  loading: true,
+  publishingStep: 0
 };
 
+export const messages: any = {
+    0: '1/2<br />Connecting...',
+    1: '2/2<br />Successfully conected.'
+}
 
 export default class Modal extends React.Component<IModalProps, IModalState> {
 
@@ -198,12 +205,24 @@ export default class Modal extends React.Component<IModalProps, IModalState> {
     }
   }
 
-  setLoading = (loading: boolean) => {
-      this.setState({loading});
-  }
+  // setLoading = (loading: boolean) => {
+  //     this.setState({loading});
+  // }
 
   logIn = (loggedIn: boolean) => {
+      let interv;
       this.setState({loggedIn}, () => console.log('LogIn', this.state.loggedIn));
+      if(loggedIn){
+          interv=setInterval(() => this.nextStep(), 1000)
+      }else {
+          if(interv){ clearInterval(interv) }
+          this.setState({publishingStep: 0})
+      }
+  }
+
+  nextStep = () => {
+      let next = this.state.publishingStep + 1
+      this.setState({publishingStep: next})
   }
 
   connectWallet = () => {
@@ -211,8 +230,8 @@ export default class Modal extends React.Component<IModalProps, IModalState> {
   }
 
   public render = () => {
-    const { show, lightboxOffset } = this.state;
-
+    const { show, lightboxOffset, publishingStep } = this.state;
+    const message = messages[publishingStep]
     // const { onClose, lightboxOpacity, providers } = this.props;
     const { connectBurner, connectWallet, onClose, lightboxOpacity } = this.props;
 
@@ -251,14 +270,14 @@ export default class Modal extends React.Component<IModalProps, IModalState> {
           <SHitbox onClick={onClose} />
           <SModalCard
             show={show}
-            maxWidth={300}
+            maxWidth={320}
             ref={c => (this.mainModalCard = c)}
           >
             <SHeader>powered by <span className="logo">DECENTRAMINDS.ai</span></SHeader>
             <SClose onClick={onClose} href={"#"}>X</SClose>
             {!this.state.loggedIn ? (
               <Providers onLogIn={this.logIn} connectBurner={connectBurner} connectWallet={connectWallet}/>
-          ) : ( this.state.loading ? <Loading setLoading={this.setLoading}/>
+          ) : ( this.state.publishingStep < 2 ? <Spinner message={message} />
               : <Wallet onLogOut={this.logIn}/>
             )}
 
