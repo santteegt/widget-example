@@ -25,7 +25,7 @@ const SBannerWrapper = styled.div`
 
 const Banner = () => (
   <SBannerWrapper>
-    <span>{`Example dApp`}</span>
+    <span>{`Example App`}</span>
   </SBannerWrapper>
 )
 

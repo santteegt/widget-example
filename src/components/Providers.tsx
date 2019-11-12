@@ -1,5 +1,6 @@
-import * as React from "react";
-import Provider from "./Provider";
+import * as React from 'react';
+import Provider from './Provider';
+import { Widget } from '../core/context';
 
 interface IProvidersProps {
   onLogIn: (boolean) => any;
@@ -11,6 +12,8 @@ interface IProvidersProps {
 
 class Providers extends React.Component<IProvidersProps, any> {
 
+    public static contextType = Widget
+
     public render = () => {
         const { onLogIn, connectBurner, connectWallet } = this.props;
         return(
@@ -19,7 +22,10 @@ class Providers extends React.Component<IProvidersProps, any> {
                     onLogIn(true)
                     connectBurner()
                 }} />
-                <Provider name={"ConnectWallet"} onClick={() => connectWallet()} />
+                <Provider name={"ConnectWallet"} onClick={() => {
+                    onLogIn(true)
+                    connectWallet()
+                }} />
             </div>
         )
     }

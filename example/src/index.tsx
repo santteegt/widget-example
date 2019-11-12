@@ -18,6 +18,8 @@ declare global {
   }
 }
 
+console.log(GlobalStyle)
+
 ReactDOM.render(
   <>
     <GlobalStyle />

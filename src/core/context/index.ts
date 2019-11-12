@@ -4,9 +4,9 @@ export const Widget = React.createContext({
 	isLoggedIn: false,
     isLoading: false,
     account: '',
-    web3: {},
-    ocean: {},
-    box: {},
+    web3: null as any,
+    ocean: null as any,
+    box: null as any,
     balance: {
         eth: 0,
         ocn: 0
@@ -26,6 +26,9 @@ export const Widget = React.createContext({
     },
     loginBurnerWallet: () => {
         /* empty */
+    },
+    logout: () => {
+    	/* empty */	
     },
     message: ''
 

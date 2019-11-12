@@ -1,56 +1,5 @@
 import providers, { fallbackProvider } from "../providers";
-import { IProviderInfo, IInjectedProvidersMap } from "./types";
-
-export function checkInjectedProviders(): IInjectedProvidersMap {
-  const result = {
-    injectedAvailable: !!window.ethereum || !!window.web3
-  };
-  console.log("injectedAvailable", result.injectedAvailable);
-  if (result.injectedAvailable) {
-    let fallbackProvider = true;
-    providers.forEach(provider => {
-      result[provider.check] = window.ethereum
-        ? window.ethereum[provider.check] ||
-          (window.web3 && window.web3.currentProvider)
-          ? window.web3
-            ? window.web3.currentProvider[provider.check]
-            : true
-          : false
-        : window.web3 && window.web3.currentProvider
-        ? window.web3.currentProvider[provider.check]
-        : false;
-      if (result[provider.check] === true) {
-        fallbackProvider = false;
-      }
-    });
-    if (result["isMetamask"]) {
-      if (window.web3.currentProvider.isNiftyWallet) {
-        result["isMetamask"] = false;
-        result["isNiftyWallet"] = true;
-      }
-    }
-    if (fallbackProvider) {
-      result["isWeb3"] = true;
-    }
-  }
-
-  return result;
-}
-
-// export function getInjectedProviderName(): string | null {
-//   let result = null;
-//
-//   const injectedProviders = checkInjectedProviders();
-//
-//   if (injectedProviders.injectedAvailable) {
-//     providers.forEach((providerInfo: IProviderInfo) => {
-//       if (injectedProviders[providerInfo.check]) {
-//         result = providerInfo.name;
-//       }
-//     });
-//   }
-//   return result;
-// }
+import { IProviderInfo } from "./types";
 
 export function getProviderInfoByName(name: string | null): IProviderInfo {
   let result = fallbackProvider;
@@ -117,10 +66,10 @@ export function formatProviderDescription(providerInfo: IProviderInfo) {
   let description = "";
   switch (providerInfo.check) {
     case "isNewUser":
-      description = `I'm a new user (Burner Wallet)`;
+      description = `Option 1`;
       break;
     case "isWallet":
-      description = `Connect Wallet`;
+      description = `Option 2`;
       break;
     default:
       break;

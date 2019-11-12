@@ -16,8 +16,8 @@
   "scripts": {
     "bootstrap": "npm install && npm run link",
     "link": "npm link ../",
-    "start": "npm run link && NODE_OPTIONS=--max_old_space_size=4096 react-scripts-ts start",
-    "build": "react-scripts-ts build",
+    "start": "npm run link && NODE_OPTIONS=--max_old_space_size=4096 SKIP_PREFLIGHT_CHECK=true react-scripts-ts start",
+    "build": "NODE_OPTIONS=--max_old_space_size=4096 react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
   },

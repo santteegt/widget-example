@@ -2,10 +2,7 @@ import * as React from "react";
 import * as PropTypes from "prop-types";
 import styled from "styled-components";
 import Providers from "./Providers";
-import Wallet from "./Wallet";
 import { Widget } from '../core/context';
-// import Loading from './Loading';
-import Spinner from './Spinner';
 import {
   SimpleFunction,
   // IProviderCallback
@@ -16,7 +13,7 @@ declare global {
   interface Window {
     ethereum: any;
     web3: any;
-    updateOceanWalletModal: any;
+    updateModal: any;
   }
 }
 
@@ -133,8 +130,8 @@ const SModalCard = styled.div<IModalCardStyleProps>`
 
 interface IModalProps {
   // providers: IProviderCallback[];
-  connectBurner: () => any;
-  connectWallet: () => any;
+  connectBurner?: () => any;
+  connectWallet?: () => any;
   onClose: SimpleFunction;
   resetState: SimpleFunction;
   lightboxOpacity: number;
@@ -156,17 +153,12 @@ const INITIAL_STATE: IModalState = {
   publishingStep: 0
 };
 
-export const messages: any = {
-    0: '1/2<br />Connecting...',
-    1: '2/2<br />Successfully conected.'
-}
-
 export default class Modal extends React.Component<IModalProps, IModalState> {
 
   constructor(props: IModalProps) {
     super(props);
     this.logIn.bind(this);
-    window.updateOceanWalletModal = async (state: IModalState) => {
+    window.updateModal = async (state: IModalState) => {
       this.setState(state);
     };
   }
@@ -189,9 +181,6 @@ export default class Modal extends React.Component<IModalProps, IModalState> {
   }
 
   public componentDidUpdate(prevProps: IModalProps, prevState: IModalState) {
-    if (prevState.show && !this.state.show) {
-      this.props.resetState();
-    }
     if (this.lightboxRef) {
       const lightboxRect = this.lightboxRef.getBoundingClientRect();
       const lightboxOffset = lightboxRect.top > 0 ? lightboxRect.top : 0;
@@ -205,18 +194,11 @@ export default class Modal extends React.Component<IModalProps, IModalState> {
     }
   }
 
-  // setLoading = (loading: boolean) => {
-  //     this.setState({loading});
-  // }
-
   logIn = (loggedIn: boolean) => {
-      let interv;
+      // let interv;
       this.setState({loggedIn}, () => console.log('LogIn', this.state.loggedIn));
-      if(loggedIn){
-          interv=setInterval(() => this.nextStep(), 1000)
-      }else {
-          if(interv){ clearInterval(interv) }
-          this.setState({publishingStep: 0})
+      if (!loggedIn) {
+        this.context.logout();
       }
   }
 
@@ -230,34 +212,8 @@ export default class Modal extends React.Component<IModalProps, IModalState> {
   }
 
   public render = () => {
-    const { show, lightboxOffset, publishingStep } = this.state;
-    const message = messages[publishingStep]
-    // const { onClose, lightboxOpacity, providers } = this.props;
-    const { connectBurner, connectWallet, onClose, lightboxOpacity } = this.props;
-
-    // return (
-    //   <SLightbox
-    //     offset={lightboxOffset}
-    //     opacity={lightboxOpacity}
-    //     ref={c => (this.lightboxRef = c)}
-    //     show={show}
-    //   >
-    //     <SModalContainer show={show}>
-    //       <SHitbox onClick={onClose} />
-    //       <SModalCard
-    //         show={show}
-    //         maxWidth={providers.length < 3 ? 500 : 800}
-    //         ref={c => (this.mainModalCard = c)}
-    //       >
-    //         {providers.map(provider =>
-    //           !!provider ? (
-    //             <Provider name={provider.name} onClick={provider.onClick} />
-    //           ) : null
-    //         )}
-    //       </SModalCard>
-    //     </SModalContainer>
-    //   </SLightbox>
-    // );
+    const { show, lightboxOffset } = this.state;
+    const { onClose, lightboxOpacity } = this.props;
 
     return (
       <SLightbox
@@ -273,13 +229,9 @@ export default class Modal extends React.Component<IModalProps, IModalState> {
             maxWidth={320}
             ref={c => (this.mainModalCard = c)}
           >
-            <SHeader>powered by <span className="logo">DECENTRAMINDS.ai</span></SHeader>
+            <SHeader>Modal Widget Example</SHeader>
             <SClose onClick={onClose} href={"#"}>X</SClose>
-            {!this.state.loggedIn ? (
-              <Providers onLogIn={this.logIn} connectBurner={connectBurner} connectWallet={connectWallet}/>
-          ) : ( this.state.publishingStep < 2 ? <Spinner message={message} />
-              : <Wallet onLogOut={this.logIn}/>
-            )}
+            <Providers onLogIn={() => console.log('click')} connectBurner={() => {}} connectWallet={() => {}}/>
 
 
           </SModalCard>
